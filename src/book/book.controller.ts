@@ -3,7 +3,7 @@ import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { IUser } from 'src/users/user.interface';
-import { User } from 'src/decorator/customize';
+import { ResponseMessage, User } from 'src/decorator/customize';
 
 @Controller('book')
 export class BookController {
@@ -15,6 +15,7 @@ export class BookController {
   }
 
   @Get()
+  @ResponseMessage('Get list book successfully')
   findAll(
     @Query('current') currentPage: string,
     @Query('pageSize') limit: string,
