@@ -7,13 +7,14 @@ import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { IUser } from 'src/users/user.interface';
 import aqp from 'api-query-params';
 import { isEmpty } from 'class-validator';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class BookService {
 
   constructor(
     @InjectModel(Book.name)
-    private bookModel: SoftDeleteModel<BookDocument>
+    private bookModel: Model<BookDocument>
   ) { }
 
   create(createBookDto: CreateBookDto) {
@@ -77,14 +78,14 @@ export class BookService {
   async remove(id: string, user: IUser) {
     const book = await this.bookModel.findOne({
       _id: id,
-      $or: [
-        { isDeleted: false },
-        { isDeleted: { $exists: false } }
-      ]
+      // $or: [
+      //   { isDeleted: false },
+      //   { isDeleted: { $exists: false } }
+      // ]
     });
     if (!book) {
       throw new Error('Book not found');
     }
-    return this.bookModel.softDelete({ _id: id });
+    return this.bookModel.deleteOne({ _id: id });
   }
 }
