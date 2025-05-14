@@ -15,13 +15,18 @@ export class BookController {
   }
 
   @Get()
-  @ResponseMessage('Get list book successfully')
+  @ResponseMessage("Fetch users")
   findAll(
-    @Query('current') currentPage: string,
-    @Query('pageSize') limit: string,
-    @Query() qs: string
+    @Query("current") current: string,
+    @Query("pageSize") pageSize: string,
+    @Query() qs: string,
   ) {
-    return this.bookService.findAll(+currentPage, +limit, qs);
+    // Kiểm tra nếu có tham số phân trang (current và pageSize) thì gọi phương thức phân trang
+    if (current && pageSize) {
+      return this.bookService.findAllPaginate(+current, +pageSize, qs);
+    }
+    // Nếu không có tham số phân trang, gọi phương thức lấy tất cả
+    return this.bookService.findAll();
   }
 
   @Get(':id')

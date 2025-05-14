@@ -21,13 +21,18 @@ export class UsersController {
   }
 
   @Get()
-  @ResponseMessage("Fetch user with paginate")
+  @ResponseMessage("Fetch users")
   findAll(
-    @Query("page") currentPage: string,
-    @Query("limit") limit: string,
+    @Query("current") current: string,
+    @Query("pageSize") pageSize: string,
     @Query() qs: string,
   ) {
-    return this.usersService.findAll(+currentPage, +limit, qs);
+    // Kiểm tra nếu có tham số phân trang (current và pageSize) thì gọi phương thức phân trang
+    if (current && pageSize) {
+      return this.usersService.findAllPaginate(+current, +pageSize, qs);
+    }
+    // Nếu không có tham số phân trang, gọi phương thức lấy tất cả
+    return this.usersService.findAll();
   }
 
   @Public()

@@ -52,7 +52,15 @@ export class UsersService {
     return newRegister;
   }
 
-  async findAll(currentPage: number, limit: number, qs: string) {
+  async findAll() {
+    const result = await this.userModel.find()
+      .select('-password -__v -refreshToken')
+      .exec();
+
+    return result;
+  }
+
+  async findAllPaginate(currentPage: number, limit: number, qs: string) {
     const { filter, projection, population, sort } = aqp(qs);
     delete filter.current;
     delete filter.pageSize;
@@ -73,12 +81,12 @@ export class UsersService {
 
     return {
       meta: {
-        current: currentPage,
-        pageSize: limit,
-        pages: totalPages,
-        total: totalItems
+        current: currentPage, //trang hiện tại 
+        pageSize: limit, //số lượng bản ghi đã lấy 
+        pages: totalPages,  //tổng số trang với điều kiện query 
+        total: totalItems // tổng số phần tử (số bản ghi) 
       },
-      result
+      result //kết quả query 
     }
   }
 

@@ -21,7 +21,14 @@ export class BookService {
     return this.bookModel.create({ ...createBookDto });
   }
 
-  async findAll(currentPage: number, limit: number, qs: string) {
+  async findAll() {
+    const result = await this.bookModel.find()
+      .exec();
+
+    return result;
+  }
+
+  async findAllPaginate(currentPage: number, limit: number, qs: string) {
     const { filter, projection, population, sort } = aqp(qs);
     delete filter.current;
     delete filter.pageSize;
@@ -34,7 +41,7 @@ export class BookService {
     const result = await this.bookModel.find(filter)
       .skip(offset)
       .limit(defaultLimit)
-      // @ts-ignore: Unreachable code error 
+      // @ts-ignore: Unreachable code error
       .sort(sort)
       .populate(population)
       .exec();
