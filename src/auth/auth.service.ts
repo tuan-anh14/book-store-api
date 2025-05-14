@@ -3,12 +3,15 @@ import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { IUser } from 'src/users/user.interface';
 import { RegisterUserDto } from 'src/users/dto/create-user.dto';
+import { ConfigService } from '@nestjs/config';
+import ms, { StringValue } from 'ms';
 
 @Injectable()
 export class AuthService {
     constructor(
         private usersService: UsersService,
         private jwtService: JwtService,
+        private configService: ConfigService
     ) { }
 
     //ussername/ pass là 2 tham số thư viện passport nó ném về
@@ -27,30 +30,31 @@ export class AuthService {
     async login(user: IUser) {
         const { _id, fullName, email, role, phone, avatar } = user;
         const payload = {
+            sub: "token login",
+            iss: "from server",
             email,
             phone,
             fullName,
             role,
-            sub: _id,
+            _id,
             avatar
         };
+
+        const refresh_token = this.createRefreshToken(payload);
 
         const access_token = this.jwtService.sign(payload);
 
         return {
-            statusCode: 201,
-            message: "",
-            data: {
-                access_token,
-                user: {
-                    email,
-                    phone,
-                    fullName,
-                    role,
-                    avatar,
-                    id: _id
-                }
+            user: {
+                email,
+                phone,
+                fullName,
+                role,
+                avatar,
+                id: _id
             },
+            access_token,
+            refresh_token,
         };
     }
 
@@ -61,6 +65,15 @@ export class AuthService {
             _id: newUser?._id,
             createdAt: newUser?.createdAt,
         }
+    }
+
+    createRefreshToken = (payload: any) => {
+        const refresh_token = this.jwtService.sign(payload, {
+            secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+            expiresIn: ms(this.configService.get<string>('JWT_REFRESH_EXPIRE') as StringValue) / 1000
+        })
+
+        return refresh_token;
     }
 
 }
