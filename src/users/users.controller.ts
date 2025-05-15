@@ -56,4 +56,11 @@ export class UsersController {
     return this.usersService.remove(id, user);
   }
 
+  @Post('/bulk-create')
+  @ResponseMessage('Bulk create users')
+  async bulkCreate(@Body() users: CreateUserDto[], @User() user: IUser) {
+    return this.usersService.bulkCreate(users, user);
+  }
+
+
 }

@@ -134,4 +134,33 @@ export class UsersService {
   findUserByToken = async (refreshToken: string) => {
     return await this.userModel.findOne({ refreshToken })
   }
+
+  async bulkCreate(users: CreateUserDto[], user: IUser) {
+    const createdUsers = [];
+
+    for (const u of users) {
+      const isExist = await this.userModel.findOne({ email: u.email });
+      if (isExist) continue; // Bỏ qua nếu tồn tại
+
+      const hashPassword = this.getHashPassword(u.password);
+      const createdUser = await this.userModel.create({
+        fullName: u.fullName,
+        email: u.email,
+        phone: u.phone,
+        password: hashPassword,
+        role: u.role || 'USER', // Default role
+      });
+
+      createdUsers.push(createdUser);
+    }
+
+    return {
+      message: `Đã tạo ${createdUsers.length} người dùng thành công`,
+      data: createdUsers.map(user => ({
+        _id: user._id,
+        email: user.email
+      }))
+    };
+  }
+
 }
