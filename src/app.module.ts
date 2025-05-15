@@ -10,6 +10,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 import { BookModule } from './book/book.module';
 import { CategoryModule } from './category/category.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -32,7 +33,8 @@ import { CategoryModule } from './category/category.module';
     UsersModule,
     AuthModule,
     BookModule,
-    CategoryModule
+    CategoryModule,
+    FilesModule
   ],
   controllers: [AppController],
   providers: [AppService],
