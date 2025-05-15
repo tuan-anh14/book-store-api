@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { IUser } from 'src/users/user.interface';
@@ -13,7 +13,7 @@ export class AuthService {
     constructor(
         private usersService: UsersService,
         private jwtService: JwtService,
-        private configService: ConfigService
+        private configService: ConfigService,
     ) { }
 
     //ussername/ pass là 2 tham số thư viện passport nó ném về
@@ -85,5 +85,61 @@ export class AuthService {
 
         return refresh_token;
     }
+
+    processNewToken = async (refreshToken: string, response: Response) => {
+        try {
+            this.jwtService.verify(refreshToken, {
+                secret: this.configService.get<string>("JWT_REFRESH_SECRET")
+            })
+            let user = await this.usersService.findUserByToken(refreshToken);
+            if (user) {
+                const { _id, fullName, email, role, phone, avatar, address } = user;
+                const payload = {
+                    sub: "token refresh",
+                    iss: "from server",
+                    _id,
+                    fullName,
+                    email,
+                    role,
+                    phone,
+                    avatar,
+                    address
+                };
+
+                const refresh_token = this.createRefreshToken(payload);
+
+                //update user with refresh token
+                await this.usersService.updateUserToken(refresh_token, _id.toString());
+
+                //set refresh_token as cookies
+                response.clearCookie("refresh_token");
+
+                response.cookie('refresh_token', refresh_token, {
+                    httpOnly: true,
+                    maxAge: ms(this.configService.get<string>("JWT_REFRESH_EXPIRE") as StringValue)
+                })
+
+
+                return {
+                    access_token: this.jwtService.sign(payload),
+                    user: {
+                        _id,
+                        fullName,
+                        email,
+                        role,
+                        phone,
+                        avatar,
+                        address
+                    }
+                };
+            } else {
+                throw new BadRequestException(`Refresh token không hợp lệ. Vui lòng login.`)
+            }
+        } catch (error) {
+            throw new BadRequestException(`Refresh token không hợp lệ. Vui lòng login.`)
+        }
+    }
+
+
 
 }
