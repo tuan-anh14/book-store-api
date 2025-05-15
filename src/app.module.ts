@@ -9,6 +9,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 import { BookModule } from './book/book.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { BookModule } from './book/book.module';
 
     UsersModule,
     AuthModule,
-    BookModule
+    BookModule,
+    CategoryModule
   ],
   controllers: [AppController],
   providers: [AppService],
