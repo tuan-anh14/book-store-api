@@ -3,7 +3,7 @@ import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { IUser } from 'src/users/user.interface';
-import { ResponseMessage, User } from 'src/decorator/customize';
+import { Public, ResponseMessage, User } from 'src/decorator/customize';
 
 @Controller('book')
 export class BookController {
@@ -14,8 +14,9 @@ export class BookController {
     return this.bookService.create(createBookDto);
   }
 
+  @Public()
   @Get()
-  @ResponseMessage("Fetch users")
+  @ResponseMessage("Fetch books")
   findAll(
     @Query("current") current: string,
     @Query("pageSize") pageSize: string,
