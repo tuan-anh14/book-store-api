@@ -30,6 +30,7 @@ export class BookController {
     return this.bookService.findAll();
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.bookService.findOne(id);
