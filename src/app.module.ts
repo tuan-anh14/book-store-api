@@ -12,6 +12,7 @@ import { BookModule } from './book/book.module';
 import { CategoryModule } from './category/category.module';
 import { FilesModule } from './files/files.module';
 import { OrderModule } from './order/order.module';
+import { HistoryModule } from './history/history.module';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { OrderModule } from './order/order.module';
     BookModule,
     CategoryModule,
     FilesModule,
-    OrderModule
+    OrderModule,
+    HistoryModule
   ],
   controllers: [AppController],
   providers: [AppService],
