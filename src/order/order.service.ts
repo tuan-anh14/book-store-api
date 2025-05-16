@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Order, OrderDocument } from './schemas/order.schema';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import aqp from 'api-query-params';
 
 @Injectable()
 export class OrderService {
@@ -16,19 +17,51 @@ export class OrderService {
     return createdOrder.save();
   }
 
-  findAll() {
-    return `This action returns all order`;
+  async findAll() {
+    return this.orderModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async findAllWithPaginate(currentPage: number, limit: number, qs: string) {
+    const { filter, projection, population, sort } = aqp(qs);
+    delete filter.current;
+    delete filter.pageSize;
+
+    let offset = (+currentPage - 1) * (+limit);
+    let defaultLimit = +limit ? +limit : 10;
+    const totalItems = (await this.orderModel.find(filter)).length;
+    const totalPages = Math.ceil(totalItems / defaultLimit);
+
+    const result = await this.orderModel.find(filter)
+      .skip(offset)
+      .limit(defaultLimit)
+      // @ts-ignore: Unreachable code error
+      .sort(sort)
+      .populate(population)
+      .exec();
+
+    return {
+      meta: {
+        current: currentPage,
+        pageSize: limit,
+        pages: totalPages,
+        total: totalItems
+      },
+      result
+    }
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  findOne(id: string) {
+    return this.orderModel.findOne({ _id: id });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+  update(id: string, updateOrderDto: UpdateOrderDto) {
+    return this.orderModel.updateOne(
+      { _id: id },
+      { ...updateOrderDto }
+    );
+  }
+
+  remove(id: string) {
+    return this.orderModel.deleteOne({ _id: id });
   }
 }
