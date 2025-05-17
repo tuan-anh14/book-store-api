@@ -1,34 +1,59 @@
 import { Injectable } from '@nestjs/common';
-import { CreateHistoryDto } from './dto/create-history.dto';
-import { UpdateHistoryDto } from './dto/update-history.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { History, HistoryDocument } from './schemas/history.schema';
+import { CreateHistoryDto } from './dto/create-history.dto';
+import aqp from 'api-query-params';
 
 @Injectable()
 export class HistoryService {
   constructor(
-    @InjectModel(History.name)
-    private historyModel: Model<HistoryDocument>
+    @InjectModel(History.name) private historyModel: Model<HistoryDocument>,
   ) { }
 
-  create(createHistoryDto: CreateHistoryDto) {
-    return 'This action adds a new history';
+  async create(createHistoryDto: CreateHistoryDto): Promise<History> {
+    const createdHistory = new this.historyModel(createHistoryDto);
+    return createdHistory.save();
   }
 
-  async findAll(userId: string) {
-    return this.historyModel.find({ userId }).sort({ createdAt: -1 }).exec();
+  async findAll() {
+    return this.historyModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} history`;
+  async findByUserId(userId: string) {
+    return this.historyModel.find({ userId }).exec();
   }
 
-  update(id: number, updateHistoryDto: UpdateHistoryDto) {
-    return `This action updates a #${id} history`;
+  async findAllWithPaginate(currentPage: number, limit: number, qs: string) {
+    const { filter, projection, population, sort } = aqp(qs);
+    delete filter.current;
+    delete filter.pageSize;
+
+    let offset = (+currentPage - 1) * (+limit);
+    let defaultLimit = +limit ? +limit : 10;
+    const totalItems = (await this.historyModel.find(filter)).length;
+    const totalPages = Math.ceil(totalItems / defaultLimit);
+
+    const result = await this.historyModel.find(filter)
+      .skip(offset)
+      .limit(defaultLimit)
+      // @ts-ignore: Unreachable code error
+      .sort(sort)
+      .populate(population)
+      .exec();
+
+    return {
+      meta: {
+        current: currentPage,
+        pageSize: limit,
+        pages: totalPages,
+        total: totalItems
+      },
+      result
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} history`;
+  findOne(id: string) {
+    return this.historyModel.findOne({ _id: id });
   }
 }

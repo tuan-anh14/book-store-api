@@ -1,39 +1,36 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
-import { HistoryService } from './history.service';
-import { CreateHistoryDto } from './dto/create-history.dto';
-import { UpdateHistoryDto } from './dto/update-history.dto';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ResponseMessage, User } from '../decorator/customize';
 import { IUser } from '../users/user.interface';
+import { HistoryService } from './history.service';
 
 @Controller('history')
 export class HistoryController {
   constructor(private readonly historyService: HistoryService) { }
 
-  @Post()
-  create(@Body() createHistoryDto: CreateHistoryDto) {
-    return this.historyService.create(createHistoryDto);
-  }
-
-  @Get()
   @UseGuards(JwtAuthGuard)
-  @ResponseMessage("Fetch history")
-  findAll(@User() user: IUser) {
-    return this.historyService.findAll(user._id);
+  @Get()
+  @ResponseMessage("Fetch user purchase history")
+  findAll(
+    @User() user: IUser,
+    @Query("current") current: string,
+    @Query("pageSize") pageSize: string,
+    @Query() qs: string,
+  ) {
+    // Nếu có tham số phân trang, sử dụng phân trang
+    if (current && pageSize) {
+      // Thêm userId vào query string để lọc theo người dùng hiện tại
+      qs += `&userId=${user._id}`;
+      return this.historyService.findAllWithPaginate(+current, +pageSize, qs);
+    }
+
+    // Nếu không có tham số phân trang, lấy tất cả lịch sử của người dùng hiện tại
+    return this.historyService.findByUserId(user._id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.historyService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHistoryDto: UpdateHistoryDto) {
-    return this.historyService.update(+id, updateHistoryDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.historyService.remove(+id);
+    return this.historyService.findOne(id);
   }
 }

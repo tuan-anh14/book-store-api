@@ -3,7 +3,8 @@ import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { ResponseMessage } from '../decorator/customize';
+import { ResponseMessage, User } from '../decorator/customize';
+import { IUser } from '../users/user.interface';
 
 @Controller('/order')
 export class OrderController {
@@ -11,8 +12,9 @@ export class OrderController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.orderService.create(createOrderDto);
+  @ResponseMessage("Create order")
+  create(@Body() createOrderDto: CreateOrderDto, @User() user: IUser) {
+    return this.orderService.create(createOrderDto, user);
   }
 
   @Get()

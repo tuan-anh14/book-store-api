@@ -5,16 +5,37 @@ import { Order, OrderDocument } from './schemas/order.schema';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import aqp from 'api-query-params';
+import { IUser } from '../users/user.interface';
+import { History, HistoryDocument } from '../history/schemas/history.schema';
 
 @Injectable()
 export class OrderService {
   constructor(
     @InjectModel(Order.name) private orderModel: Model<OrderDocument>,
+    @InjectModel(History.name) private historyModel: Model<HistoryDocument>
   ) { }
 
-  async create(createOrderDto: CreateOrderDto): Promise<Order> {
-    const createdOrder = new this.orderModel(createOrderDto);
-    return createdOrder.save();
+  async create(createOrderDto: CreateOrderDto, user: IUser): Promise<Order> {
+    // Tạo order mới
+    const createdOrder = new this.orderModel({
+      ...createOrderDto,
+      userId: user._id,
+      status: 'PENDING'
+    });
+    const savedOrder = await createdOrder.save();
+
+    // Tạo history record
+    const historyData = {
+      name: createOrderDto.name,
+      email: user.email,
+      phone: createOrderDto.phone,
+      userId: user._id,
+      detail: createOrderDto.detail,
+      totalPrice: createOrderDto.totalPrice
+    };
+    await this.historyModel.create(historyData);
+
+    return savedOrder;
   }
 
   async findAll() {
