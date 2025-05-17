@@ -5,6 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Public, ResponseMessage, User } from 'src/decorator/customize';
 import { IUser } from './user.interface';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { UpdateUserInfoDto } from './dto/update-user-info.dto';
 
 @Controller('user')
 export class UsersController {
@@ -67,6 +68,12 @@ export class UsersController {
   @ResponseMessage("Change password successfully")
   changePassword(@Body() changePasswordDto: ChangePasswordDto) {
     return this.usersService.changePassword(changePasswordDto);
+  }
+
+  @ResponseMessage("Update user info")
+  @Put('/info')
+  async updateUserInfo(@Body() updateUserInfoDto: UpdateUserInfoDto) {
+    return this.usersService.updateUserInfo(updateUserInfoDto);
   }
 
 }

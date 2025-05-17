@@ -9,6 +9,7 @@ import { IUser } from './user.interface';
 import { User } from 'src/decorator/customize';
 import aqp from 'api-query-params';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { UpdateUserInfoDto } from './dto/update-user-info.dto';
 
 @Injectable()
 export class UsersService {
@@ -187,6 +188,22 @@ export class UsersService {
       {
         $set: {
           password: hashPassword,
+          updatedAt: new Date()
+        }
+      }
+    );
+  }
+
+  async updateUserInfo(updateUserInfoDto: UpdateUserInfoDto) {
+    const { _id, fullName, phone, avatar } = updateUserInfoDto;
+
+    return this.userModel.updateOne(
+      { _id },
+      {
+        $set: {
+          fullName,
+          phone,
+          avatar,
           updatedAt: new Date()
         }
       }
