@@ -21,6 +21,17 @@ export class BookService {
     return this.bookModel.create({ ...createBookDto });
   }
 
+  async bulkCreate(createBookDtos: CreateBookDto[]) {
+    const books = createBookDtos.map(book => ({
+      ...book,
+      quantity: 0,
+      sold: 0,
+      thumbnail: '',
+      slider: []
+    }));
+    return this.bookModel.insertMany(books);
+  }
+
   async findAll() {
     const result = await this.bookModel.find()
       .exec();

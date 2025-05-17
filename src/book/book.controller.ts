@@ -1,17 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { IUser } from 'src/users/user.interface';
 import { Public, ResponseMessage, User } from 'src/decorator/customize';
 
-@Controller('book')
+@Controller('/book')
 export class BookController {
   constructor(private readonly bookService: BookService) { }
 
   @Post()
   create(@Body() createBookDto: CreateBookDto, @User() user: IUser) {
     return this.bookService.create(createBookDto);
+  }
+
+  @Post('bulk-create')
+  @ResponseMessage("Bulk create books")
+  bulkCreate(@Body() createBookDtos: CreateBookDto[]) {
+    return this.bookService.bulkCreate(createBookDtos);
   }
 
   @Public()
