@@ -14,35 +14,41 @@ export class CategoryService {
   ) { }
 
   async findAll() {
-    return this.categoryModel.find().select('name');
+    return this.categoryModel.find().exec();
   }
 
-  async create(createCategoryDto: CreateCategoryDto, user: IUser) {
+  async findOne(id: string) {
+    return this.categoryModel.findOne({ _id: id }).exec();
+  }
+
+  async create(createCategoryDto: CreateCategoryDto) {
     const newCategory = await this.categoryModel.create({
-      ...createCategoryDto,
-      createdBy: {
-        _id: user._id,
-        email: user.email
-      }
+      ...createCategoryDto
     });
     return newCategory;
   }
 
-  async update(updateCategoryDto: UpdateCategoryDto, user: IUser) {
-    const updated = await this.categoryModel.updateOne(
-      { _id: updateCategoryDto._id },
+  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+    const category = await this.categoryModel.findOne({ _id: id });
+    if (!category) {
+      throw new Error('Category not found');
+    }
+
+    await this.categoryModel.updateOne(
+      { _id: id },
       {
-        ...updateCategoryDto,
-        updatedBy: {
-          _id: user._id,
-          email: user.email
+        $set: {
+          ...updateCategoryDto,
+          updatedAt: new Date()
         }
       }
     );
-    return updated;
+
+    // Return the updated category with timestamps
+    return this.categoryModel.findOne({ _id: id }).exec();
   }
 
-  async remove(id: string, user: IUser) {
+  async remove(id: string) {
     return this.categoryModel.deleteOne({ _id: id });
   }
 }
