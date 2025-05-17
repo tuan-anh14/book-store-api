@@ -8,6 +8,7 @@ import { genSaltSync, hashSync, compareSync } from 'bcryptjs';
 import { IUser } from './user.interface';
 import { User } from 'src/decorator/customize';
 import aqp from 'api-query-params';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -161,6 +162,35 @@ export class UsersService {
         email: user.email
       }))
     };
+  }
+
+  async changePassword(changePasswordDto: ChangePasswordDto) {
+    const { email, oldpass, newpass } = changePasswordDto;
+
+    const user = await this.userModel.findOne({ email });
+    if (!user) {
+      throw new BadRequestException('Email không tồn tại');
+    }
+
+    // Check old password
+    const isMatch = compareSync(oldpass, user.password);
+    if (!isMatch) {
+      throw new BadRequestException('Mật khẩu cũ không đúng');
+    }
+
+    // Hash new password
+    const hashPassword = this.getHashPassword(newpass);
+
+    // Update password
+    return this.userModel.updateOne(
+      { email },
+      {
+        $set: {
+          password: hashPassword,
+          updatedAt: new Date()
+        }
+      }
+    );
   }
 
 }

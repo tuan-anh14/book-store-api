@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Public, ResponseMessage, User } from 'src/decorator/customize';
 import { IUser } from './user.interface';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('user')
 export class UsersController {
@@ -62,5 +63,10 @@ export class UsersController {
     return this.usersService.bulkCreate(users, user);
   }
 
+  @Post('/change-password')
+  @ResponseMessage("Change password successfully")
+  changePassword(@Body() changePasswordDto: ChangePasswordDto) {
+    return this.usersService.changePassword(changePasswordDto);
+  }
 
 }
