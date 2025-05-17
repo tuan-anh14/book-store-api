@@ -5,14 +5,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 import { BookModule } from './book/book.module';
 import { CategoryModule } from './category/category.module';
 import { FilesModule } from './files/files.module';
 import { OrderModule } from './order/order.module';
 import { HistoryModule } from './history/history.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -38,7 +36,8 @@ import { HistoryModule } from './history/history.module';
     CategoryModule,
     FilesModule,
     OrderModule,
-    HistoryModule
+    HistoryModule,
+    DashboardModule
   ],
   controllers: [AppController],
   providers: [AppService],
