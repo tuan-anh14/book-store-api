@@ -43,6 +43,7 @@ export class BookController {
   }
 
   @Patch(':id')
+  @ResponseMessage("Update book successfully")
   update(
     @Param('id') id: string,
     @Body() updateBookDto: UpdateBookDto,

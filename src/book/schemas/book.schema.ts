@@ -15,6 +15,9 @@ export class Book {
     mainText: string;
 
     @Prop()
+    description: string;
+
+    @Prop()
     author: string;
 
     @Prop()

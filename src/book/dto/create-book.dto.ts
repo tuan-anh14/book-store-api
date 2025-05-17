@@ -13,6 +13,9 @@ export class CreateBookDto {
     mainText: string;
 
     @IsString()
+    description: string;
+
+    @IsString()
     author: string;
 
     @IsNumber()

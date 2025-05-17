@@ -79,18 +79,27 @@ export class BookService {
   }
 
   async update(id: string, updateBookDto: UpdateBookDto, user: IUser) {
+    const book = await this.bookModel.findOne({
+      _id: id,
+      $or: [
+        { isDeleted: false },
+        { isDeleted: { $exists: false } }
+      ]
+    });
+
+    if (!book) {
+      throw new Error('Book not found');
+    }
+
     return await this.bookModel.updateOne(
+      { _id: id },
       {
-        _id: id,
-        $or: [
-          { isDeleted: false },
-          { isDeleted: { $exists: false } }
-        ]
-      },
-      {
-        ...updateBookDto,
+        $set: {
+          ...updateBookDto,
+          updatedAt: new Date()
+        }
       }
-    )
+    );
   }
 
   async remove(id: string, user: IUser) {
