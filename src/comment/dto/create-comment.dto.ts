@@ -21,9 +21,5 @@ export class CreateCommentDto {
 
     @IsOptional()
     @IsString()
-    feeling?: string;
-
-    @IsOptional()
-    @IsString()
     image?: string;
 }

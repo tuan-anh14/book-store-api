@@ -16,9 +16,6 @@ export class Comment extends Document {
     star: number;
 
     @Prop()
-    feeling: string;
-
-    @Prop()
     image: string;
 }
 

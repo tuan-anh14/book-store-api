@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import { Public } from 'src/decorator/customize';
 
 @Controller('comment')
 export class CommentController {
@@ -17,6 +18,7 @@ export class CommentController {
     return this.commentService.findAll();
   }
 
+  @Public()
   @Get('book/:bookId')
   findByBook(@Param('bookId') bookId: string) {
     return this.commentService.findByBook(bookId);
