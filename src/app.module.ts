@@ -11,6 +11,7 @@ import { FilesModule } from './files/files.module';
 import { OrderModule } from './order/order.module';
 import { HistoryModule } from './history/history.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
     FilesModule,
     OrderModule,
     HistoryModule,
-    DashboardModule
+    DashboardModule,
+    CommentModule
   ],
   controllers: [AppController],
   providers: [AppService],
