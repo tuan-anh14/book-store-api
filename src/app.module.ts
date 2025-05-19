@@ -12,6 +12,7 @@ import { OrderModule } from './order/order.module';
 import { HistoryModule } from './history/history.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CommentModule } from './comment/comment.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { CommentModule } from './comment/comment.module';
     OrderModule,
     HistoryModule,
     DashboardModule,
-    CommentModule
+    CommentModule,
+    PaymentModule
   ],
   controllers: [AppController],
   providers: [AppService],
