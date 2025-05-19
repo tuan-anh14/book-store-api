@@ -13,6 +13,7 @@ import { HistoryModule } from './history/history.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CommentModule } from './comment/comment.module';
 import { PaymentModule } from './payment/payment.module';
+import { GeminiController } from './controllers/gemini.controller';
 
 @Module({
   imports: [
@@ -43,7 +44,7 @@ import { PaymentModule } from './payment/payment.module';
     CommentModule,
     PaymentModule
   ],
-  controllers: [AppController],
+  controllers: [AppController, GeminiController],
   providers: [AppService],
 })
 export class AppModule { }
