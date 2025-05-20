@@ -14,8 +14,8 @@ export class CommentController {
   }
 
   @Get()
-  findAll() {
-    return this.commentService.findAll();
+  findAll(@Query('current') current: string = '1', @Query('pageSize') pageSize: string = '5') {
+    return this.commentService.paginateComments(Number(current), Number(pageSize));
   }
 
   @Public()

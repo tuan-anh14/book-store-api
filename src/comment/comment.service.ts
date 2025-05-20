@@ -39,4 +39,35 @@ export class CommentService {
   async remove(id: string) {
     return this.commentModel.findByIdAndDelete(id).exec();
   }
+
+  async paginateComments(current: number = 1, pageSize: number = 5) {
+    const total = await this.commentModel.countDocuments();
+    const pages = Math.ceil(total / pageSize);
+
+    const result = await this.commentModel
+      .find()
+      .populate('user_id', 'fullName email avatar')
+      .populate('book_id', 'mainText')
+      .sort({ createdAt: -1 })
+      .skip((current - 1) * pageSize)
+      .limit(pageSize)
+      .lean();
+
+    // Đổi tên trường cho frontend khớp (user, book)
+    const mapped = result.map((c: any) => ({
+      ...c,
+      user: c.user_id,
+      book: c.book_id,
+    }));
+
+    return {
+      meta: {
+        current,
+        pageSize,
+        pages,
+        total,
+      },
+      result: mapped,
+    };
+  }
 }
