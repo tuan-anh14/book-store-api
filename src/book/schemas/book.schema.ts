@@ -43,6 +43,9 @@ export class Book {
 
     @Prop()
     deletedAt: Date;
+
+    @Prop([{ type: MongooseSchema.Types.ObjectId, ref: 'Comment' }])
+    comments: MongooseSchema.Types.ObjectId[];
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);
