@@ -15,8 +15,8 @@ export class Comment extends Document {
     @Prop({ required: true, min: 1, max: 5 })
     star: number;
 
-    @Prop()
-    image: string;
+    @Prop({ type: [String], default: [] })
+    images: string[];
 }
 
 export const CommentSchema = SchemaFactory.createForClass(Comment);

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsNumber, IsOptional, IsMongoId, Min, Max } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsOptional, IsMongoId, Min, Max, IsArray } from 'class-validator';
 
 export class CreateCommentDto {
     @IsNotEmpty()
@@ -20,6 +20,7 @@ export class CreateCommentDto {
     star: number;
 
     @IsOptional()
-    @IsString()
-    image?: string;
+    @IsArray()
+    @IsString({ each: true })
+    images?: string[];
 }
