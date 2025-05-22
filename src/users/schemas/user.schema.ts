@@ -20,7 +20,7 @@ export class User {
     @Prop()
     address: string;
 
-    @Prop()
+    @Prop({ default: 'public/avatar/default-avatar.png' })
     avatar: string;
 
     @Prop()
