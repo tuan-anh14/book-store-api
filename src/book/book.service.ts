@@ -44,6 +44,12 @@ export class BookService {
     delete filter.current;
     delete filter.pageSize;
 
+    // Xử lý tìm kiếm theo mainText
+    if (filter.mainText) {
+      const searchText = filter.mainText.replace(/^\//, '').replace(/\/$/, '');
+      filter.mainText = { $regex: searchText, $options: 'i' };
+    }
+
     let offset = (+currentPage - 1) * (+limit);
     let defaultLimit = +limit ? +limit : 10;
     const totalItems = (await this.bookModel.find(filter)).length;
@@ -59,12 +65,12 @@ export class BookService {
 
     return {
       meta: {
-        current: currentPage, //trang hiện tại 
-        pageSize: limit, //số lượng bản ghi đã lấy 
-        pages: totalPages,  //tổng số trang với điều kiện query 
-        total: totalItems // tổng số phần tử (số bản ghi) 
+        current: currentPage,
+        pageSize: limit,
+        pages: totalPages,
+        total: totalItems
       },
-      result //kết quả query 
+      result
     }
   }
 
