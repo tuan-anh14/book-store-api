@@ -136,52 +136,41 @@ export class DashboardService {
         };
     }
 
-    // Thống kê doanh số theo danh mục sách
-    async getCategorySales() {
+    async getMonthlyRevenue() {
         const result = await this.orderModel.aggregate([
             {
-                $unwind: '$detail'
-            },
-            {
-                $lookup: {
-                    from: 'books',
-                    localField: 'detail.book_id',
-                    foreignField: '_id',
-                    as: 'bookInfo'
+                $match: {
+                    status: { $ne: 'CANCELLED' },
+                    createdAt: {
+                        $gte: new Date('2025-01-01'),
+                        $lt: new Date('2026-01-01')
+                    }
                 }
-            },
-            {
-                $unwind: '$bookInfo'
-            },
-            {
-                $lookup: {
-                    from: 'categories',
-                    localField: 'bookInfo.category',
-                    foreignField: '_id',
-                    as: 'categoryInfo'
-                }
-            },
-            {
-                $unwind: '$categoryInfo'
             },
             {
                 $group: {
-                    _id: '$categoryInfo._id',
-                    categoryName: { $first: '$categoryInfo.name' },
-                    totalSales: { $sum: { $multiply: ['$detail.price', '$detail.quantity'] } },
-                    totalBooks: { $sum: '$detail.quantity' }
+                    _id: {
+                        month: { $month: '$createdAt' }
+                    },
+                    totalRevenue: { $sum: '$totalPrice' }
                 }
             },
             {
-                $sort: { totalSales: -1 }
+                $sort: { '_id.month': 1 }
             }
         ]);
 
-        return result.map(item => ({
-            categoryId: item._id,
-            categoryName: item.categoryName,
-            totalSales: item.totalSales,
-            totalBooks: item.totalBooks
-        }));
+        // Chuyển đổi kết quả thành định dạng mong muốn
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const formattedResult = months.map((month, index) => {
+            const monthData = result.find(item => item._id.month === index + 1);
+            return {
+                month,
+                revenue: monthData ? monthData.totalRevenue : 0
+            };
+        });
+
+        return formattedResult;
     }
+
 } 

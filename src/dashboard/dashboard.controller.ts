@@ -36,9 +36,9 @@ export class DashboardController {
         return this.dashboardService.getCustomerReviews();
     }
 
-    @Get('categories/sales')
-    @ResponseMessage("Get sales by category")
-    getCategorySales() {
-        return this.dashboardService.getCategorySales();
+    @Get('monthly-revenue')
+    @ResponseMessage("Get monthly revenue for 2024")
+    getMonthlyRevenue() {
+        return this.dashboardService.getMonthlyRevenue();
     }
 } 
