@@ -20,7 +20,7 @@ export class User {
     @Prop()
     address: string;
 
-    @Prop({ default: 'https://img.icons8.com/ios-filled/600/000000/user-male-circle.png' })
+    @Prop()
     avatar: string;
 
     @Prop()
