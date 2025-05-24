@@ -6,7 +6,8 @@ import { RegisterUserDto } from 'src/users/dto/create-user.dto';
 import { ConfigService } from '@nestjs/config';
 import ms, { StringValue } from 'ms';
 import { Response } from 'express';
-
+import { MailerService } from '../utils/mailer';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,7 @@ export class AuthService {
         private usersService: UsersService,
         private jwtService: JwtService,
         private configService: ConfigService,
+        private mailerService: MailerService,
     ) { }
 
     //ussername/ pass là 2 tham số thư viện passport nó ném về
@@ -146,4 +148,76 @@ export class AuthService {
         return "Logout successfully";
     };
 
+    registerWithVerification = async (dto: RegisterUserDto) => {
+        const { email, fullName, password, phone } = dto;
+        const existingUser = await this.usersService.findOneByUsername(email);
+        if (existingUser) throw new BadRequestException('Email đã tồn tại!');
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const verificationCode = Math.floor(100000 + Math.random() * 900000);
+        const expirationTime = Date.now() + 10 * 60 * 1000; // 10 phút
+
+        const newUser = await this.usersService.create({
+            email,
+            fullName,
+            password: hashedPassword,
+            phone,
+            verificationCode,
+            verificationExpires: new Date(expirationTime),
+            isVerified: false,
+        });
+
+        // Gửi mail
+        await this.mailerService.sendMail({
+            from: `"BookStore" <${this.configService.get<string>('EMAIL_USER')}>`,
+            to: email,
+            subject: 'Mã xác thực tài khoản BookStore',
+            html: `<p>Mã xác thực của bạn là: <strong>${verificationCode}</strong>. Có hiệu lực trong 10 phút.</p>`,
+        });
+
+        return { message: 'Đăng ký thành công. Đã gửi mã xác thực email!', data: { email } };
+    }
+
+    verifyEmail = async ({ email, code }: { email: string, code: string }) => {
+        const user = await this.usersService.findOneByUsername(email);
+        if (!user) throw new BadRequestException('User not found');
+        if (!user.verificationCode || !user.verificationExpires)
+            throw new BadRequestException('Chưa có mã xác thực, hãy đăng ký lại!');
+
+        if (user.verificationExpires.getTime() < Date.now())
+            throw new BadRequestException('Mã xác thực đã hết hạn!');
+
+        if (user.verificationCode !== parseInt(code))
+            throw new BadRequestException('Mã xác thực không đúng!');
+
+        user.isVerified = true;
+        user.verificationCode = null;
+        user.verificationExpires = null;
+        await user.save();
+
+        return { message: 'Xác thực email thành công!' };
+    }
+
+    forgotPassword = async ({ email }: { email: string }) => {
+        const user = await this.usersService.findOneByUsername(email);
+        if (!user) throw new BadRequestException('Không tìm thấy người dùng!');
+
+        const randomPassword = Math.round(100000 + Math.random() * 99000).toString();
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(randomPassword, salt);
+
+        user.password = hashedPassword;
+        await user.save();
+
+        await this.mailerService.sendMail({
+            from: `"BookStore" <${this.configService.get<string>('EMAIL_USER')}>`,
+            to: email,
+            subject: 'Mật khẩu mới',
+            html: `<h1>${randomPassword}</h1>. Vui lòng không chia sẻ với ai.`,
+        });
+
+        return { message: 'Đã gửi mật khẩu mới về email!' };
+    }
 }

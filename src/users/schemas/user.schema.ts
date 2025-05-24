@@ -20,7 +20,7 @@ export class User {
     @Prop()
     address: string;
 
-    @Prop({ default: 'public/avatar/default-avatar.png' })
+    @Prop({ default: 'https://img.icons8.com/ios-filled/600/000000/user-male-circle.png' })
     avatar: string;
 
     @Prop()
@@ -38,6 +38,14 @@ export class User {
     @Prop()
     updatedAt: Date;
 
+    @Prop()
+    verificationCode?: number;
+
+    @Prop()
+    verificationExpires?: Date;
+
+    @Prop({ default: false })
+    isVerified?: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, Matches, IsOptional } from 'class-validator';
 
 //data transfer object // class = { }
 export class CreateUserDto {
@@ -14,11 +14,12 @@ export class CreateUserDto {
 
     address: string;
 
+    @IsOptional()
+    @IsString({ message: 'Số điện thoại phải là chuỗi' })
+    @Matches(/^[0-9]{10}$/, { message: 'Số điện thoại phải có 10 chữ số' })
     phone: string;
 
     role: string;
-
-
 }
 
 export class RegisterUserDto {
@@ -34,7 +35,6 @@ export class RegisterUserDto {
 
     address: string;
 
+    @IsOptional()
     phone: string;
-
-
 }

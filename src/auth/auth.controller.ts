@@ -6,11 +6,10 @@ import { RegisterUserDto } from 'src/users/dto/create-user.dto';
 import { Request, Response } from 'express';
 import { IUser } from 'src/users/user.interface';
 
-@Controller("auth") //  route /
+@Controller("auth") // route sẽ là /api/v1/auth
 export class AuthController {
     constructor(
         private authService: AuthService
-
     ) { }
 
     @Public()
@@ -24,11 +23,32 @@ export class AuthController {
         return this.authService.login(req.user, response);
     }
 
-    @Public() //Không cần sd jwt
-    @ResponseMessage('Register a new user')
+    // @Public()
+    // @ResponseMessage('Register a new user')
+    // @Post('/register')
+    // handleRegister(@Body() registerUserDto: RegisterUserDto) {
+    //     return this.authService.register(registerUserDto);
+    // }
+
+    @Public()
     @Post('/register')
-    handleRegister(@Body() registerUserDto: RegisterUserDto) {
-        return this.authService.register(registerUserDto);
+    @ResponseMessage('Register with email verification')
+    async registerWithVerification(@Body() registerUserDto: RegisterUserDto) {
+        return this.authService.registerWithVerification(registerUserDto);
+    }
+
+    @Public()
+    @Post('/verify-email')
+    @ResponseMessage('Verify email')
+    async verifyEmail(@Body() body: { email: string, code: string }) {
+        return this.authService.verifyEmail(body);
+    }
+
+    @Public()
+    @Post('/forgot-password')
+    @ResponseMessage('Forgot password')
+    async forgotPassword(@Body() body: { email: string }) {
+        return this.authService.forgotPassword(body);
     }
 
     @ResponseMessage('Get user information')
@@ -53,5 +73,4 @@ export class AuthController {
     ) {
         return this.authService.logout(response, user);
     }
-
 }
