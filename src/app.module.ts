@@ -13,7 +13,7 @@ import { HistoryModule } from './history/history.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CommentModule } from './comment/comment.module';
 import { PaymentModule } from './payment/payment.module';
-import { GeminiController } from './controllers/gemini.controller';
+import { GeminiController } from './gemini/gemini.controller';
 
 @Module({
   imports: [
