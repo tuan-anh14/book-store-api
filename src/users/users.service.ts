@@ -162,24 +162,30 @@ export class UsersService {
       throw new BadRequestException('Email không tồn tại');
     }
 
-    // Check old password
-    const isMatch = compareSync(oldpass, user.password);
-    if (!isMatch) {
+    // So sánh old password
+    const isOldPasswordCorrect = compareSync(oldpass, user.password);
+    if (!isOldPasswordCorrect) {
       throw new BadRequestException('Mật khẩu cũ không đúng');
     }
 
-    // Hash new password
+    // Kiểm tra nếu mật khẩu mới trùng với mật khẩu cũ (cũng dùng compareSync)
+    const isSameAsOld = compareSync(newpass, user.password);
+    if (isSameAsOld) {
+      throw new BadRequestException('Mật khẩu mới không được trùng với mật khẩu cũ');
+    }
+
+    // Mã hóa mật khẩu mới
     const hashPassword = this.getHashPassword(newpass);
 
-    // Update password
+    // Cập nhật mật khẩu
     return this.userModel.updateOne(
       { email },
       {
         $set: {
           password: hashPassword,
-          updatedAt: new Date()
-        }
-      }
+          updatedAt: new Date(),
+        },
+      },
     );
   }
 
