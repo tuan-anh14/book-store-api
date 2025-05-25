@@ -1,0 +1,601 @@
+[{
+  "_id": {
+    "$oid": "6829e2e3df86382ed1645723"
+  },
+  "content": "ok day nhi😊",
+  "user_id": "67c08f19f1e4796de1914612",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 3,
+  "image": "http://localhost:8000/images/comment/Drm3vCxL_400x400-f1327cbd3b4226c14193658a4e2d8d5c-1747575521995.jpg",
+  "createdAt": {
+    "$date": "2025-05-18T13:38:43.791Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T13:38:43.791Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6829e92bdf86382ed164573c"
+  },
+  "content": "1",
+  "user_id": "67c08f19f1e4796de1914612",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 3,
+  "createdAt": {
+    "$date": "2025-05-18T14:05:31.716Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T14:05:31.716Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6829e92edf86382ed1645741"
+  },
+  "content": "2",
+  "user_id": "67c08f19f1e4796de1914612",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 2,
+  "createdAt": {
+    "$date": "2025-05-18T14:05:34.139Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T14:05:34.139Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6829e92fdf86382ed1645746"
+  },
+  "content": "3",
+  "user_id": "67c08f19f1e4796de1914612",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 4,
+  "createdAt": {
+    "$date": "2025-05-18T14:05:35.968Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T14:05:35.968Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6829e932df86382ed164574b"
+  },
+  "content": "4",
+  "user_id": "67c08f19f1e4796de1914612",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 3,
+  "createdAt": {
+    "$date": "2025-05-18T14:05:38.554Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T14:05:38.554Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6829e935df86382ed1645750"
+  },
+  "content": "6",
+  "user_id": "67c08f19f1e4796de1914612",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 4,
+  "createdAt": {
+    "$date": "2025-05-18T14:05:41.069Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T14:05:41.069Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6829e942df86382ed1645755"
+  },
+  "content": "1",
+  "user_id": "67c08f19f1e4796de1914612",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 2,
+  "createdAt": {
+    "$date": "2025-05-18T14:05:54.609Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T14:05:54.609Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6829e944df86382ed164575a"
+  },
+  "content": "2",
+  "user_id": "67c08f19f1e4796de1914612",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 1,
+  "createdAt": {
+    "$date": "2025-05-18T14:05:56.579Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T14:05:56.579Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6829e946df86382ed164575f"
+  },
+  "content": "3",
+  "user_id": "67c08f19f1e4796de1914612",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 2,
+  "createdAt": {
+    "$date": "2025-05-18T14:05:58.033Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T14:05:58.033Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6829e948df86382ed1645764"
+  },
+  "content": "4",
+  "user_id": "67c08f19f1e4796de1914612",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 3,
+  "createdAt": {
+    "$date": "2025-05-18T14:06:00.084Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T14:06:00.084Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6829e94adf86382ed1645769"
+  },
+  "content": "5",
+  "user_id": "67c08f19f1e4796de1914612",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 4,
+  "createdAt": {
+    "$date": "2025-05-18T14:06:02.418Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-18T14:06:02.418Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682c9aef94ee698ad03bec9f"
+  },
+  "content": "Đã đọc và có vẻ hay",
+  "user_id": "67c08f19f1e4796de1914614",
+  "book_id": "6822c1b400616f964b292bec",
+  "star": 4,
+  "createdAt": {
+    "$date": "2025-05-20T15:08:31.381Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-20T15:08:31.381Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682d43b219332497459a62c9"
+  },
+  "content": "Sách được",
+  "user_id": "67c08f19f1e4796de1914614",
+  "book_id": "6822c48a00616f964b292bfa",
+  "star": 4,
+  "createdAt": {
+    "$date": "2025-05-21T03:08:34.089Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-21T03:08:34.089Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682d43c319332497459a62f4"
+  },
+  "content": "Đã đọc và hay",
+  "user_id": "67c08f19f1e4796de1914614",
+  "book_id": "6822c3e100616f964b292bf4",
+  "star": 5,
+  "createdAt": {
+    "$date": "2025-05-21T03:08:51.190Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-21T03:08:51.190Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682d7f3f113d812f342091ce"
+  },
+  "content": "Hay",
+  "user_id": "67c08f19f1e4796de1914612",
+  "book_id": "6822c10f00616f964b292bea",
+  "star": 5,
+  "createdAt": {
+    "$date": "2025-05-21T07:22:39.624Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-21T07:22:39.624Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682d7f80113d812f342091fd"
+  },
+  "content": "Khá hay😂",
+  "user_id": "67c08f19f1e4796de1914612",
+  "book_id": "6822c21b00616f964b292bee",
+  "star": 5,
+  "image": "http://localhost:8000/images/comment/abaf3887d2bac3251c82be462c2ca3f4.png-1747812223229.jpg",
+  "createdAt": {
+    "$date": "2025-05-21T07:23:44.826Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-21T07:23:44.826Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682d85714fadb314999ff2dd"
+  },
+  "content": "hello",
+  "user_id": "67c08f19f1e4796de1914614",
+  "book_id": "6822c21b00616f964b292bee",
+  "star": 3,
+  "createdAt": {
+    "$date": "2025-05-21T07:49:05.066Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-21T07:49:05.066Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682d87ac0109df404297d498"
+  },
+  "content": "hay",
+  "user_id": "67c08f19f1e4796de1914614",
+  "book_id": "6822c42700616f964b292bf6",
+  "star": 4,
+  "images": [
+    "http://localhost:8000/images/comment/cedab1311a431a548c1950564ddb8ee8.jpg-1747814312426.jpg",
+    "http://localhost:8000/images/comment/935bf72ec9800e19d8b7962c12e2cc10.jpg-1747814314904.jpg"
+  ],
+  "createdAt": {
+    "$date": "2025-05-21T07:58:36.039Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-21T07:58:36.039Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682d87c40109df404297d49d"
+  },
+  "content": "hay",
+  "user_id": "67c08f19f1e4796de1914614",
+  "book_id": "6822c42700616f964b292bf6",
+  "star": 5,
+  "images": [
+    "http://localhost:8000/images/comment/cedab1311a431a548c1950564ddb8ee8.jpg-1747814333232.jpg",
+    "http://localhost:8000/images/comment/935bf72ec9800e19d8b7962c12e2cc10.jpg-1747814335620.jpg"
+  ],
+  "createdAt": {
+    "$date": "2025-05-21T07:59:00.548Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-21T07:59:00.548Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682d88870109df404297d50a"
+  },
+  "content": "Sách hay  mà",
+  "user_id": "67c08f19f1e4796de1914614",
+  "book_id": "682d49296c76be99fb301865",
+  "star": 4,
+  "images": [
+    "http://localhost:8000/images/comment/Screenshot 2025-03-21 224409-1747814524117.png",
+    "http://localhost:8000/images/comment/Screenshot 2025-03-22 223416-1747814528949.png"
+  ],
+  "createdAt": {
+    "$date": "2025-05-21T08:02:15.311Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-21T08:02:15.311Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68302d5655774c25cb5df8f4"
+  },
+  "content": "Sách ok",
+  "user_id": "67c08f19f1e4796de1914612",
+  "book_id": "6822c32700616f964b292bf0",
+  "star": 5,
+  "images": [
+    "http://localhost:8000/images/comment/490918807_655048493811502_8899069577113810198_n-1747987797214.jpg"
+  ],
+  "createdAt": {
+    "$date": "2025-05-23T08:09:58.854Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-23T08:09:58.854Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6831d02f5b0a5ff15bf40949"
+  },
+  "content": "Đc chưa",
+  "user_id": "683197b43f210fd7fa8f7afe",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 3,
+  "images": [],
+  "createdAt": {
+    "$date": "2025-05-24T13:57:03.507Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T13:57:03.507Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6831d2ee6d607b972e7a85ff"
+  },
+  "content": "hay",
+  "user_id": "683197b43f210fd7fa8f7afe",
+  "book_id": "6822c1b400616f964b292bec",
+  "star": 3,
+  "images": [],
+  "createdAt": {
+    "$date": "2025-05-24T14:08:46.138Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T14:08:46.138Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6831d3e66d607b972e7a8643"
+  },
+  "content": "Hay",
+  "user_id": "683197b43f210fd7fa8f7afe",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 4,
+  "images": [],
+  "createdAt": {
+    "$date": "2025-05-24T14:12:54.826Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T14:12:54.826Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6831d4c66d607b972e7a867d"
+  },
+  "content": "Hay",
+  "user_id": "683197b43f210fd7fa8f7afe",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 5,
+  "images": [],
+  "createdAt": {
+    "$date": "2025-05-24T14:16:38.022Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T14:16:38.022Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6831f7946358e619f419bcaf"
+  },
+  "content": "Tuyt",
+  "user_id": "683197b43f210fd7fa8f7afe",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 5,
+  "images": [
+    "http://localhost:8000/images/comment/21232f297a57a5a743894a0e4a801fc3-1748105102867.png"
+  ],
+  "createdAt": {
+    "$date": "2025-05-24T16:45:08.196Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T16:45:08.196Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6831f79e6358e619f419bcb3"
+  },
+  "content": "Tuyt",
+  "user_id": "683197b43f210fd7fa8f7afe",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 5,
+  "images": [
+    "http://localhost:8000/images/comment/21232f297a57a5a743894a0e4a801fc3-1748105102867.png"
+  ],
+  "createdAt": {
+    "$date": "2025-05-24T16:45:18.469Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T16:45:18.469Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6831f7a86358e619f419bcb7"
+  },
+  "content": "Tuyt",
+  "user_id": "683197b43f210fd7fa8f7afe",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 5,
+  "images": [
+    "http://localhost:8000/images/comment/21232f297a57a5a743894a0e4a801fc3-1748105102867.png"
+  ],
+  "createdAt": {
+    "$date": "2025-05-24T16:45:28.232Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T16:45:28.232Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6831f7a96358e619f419bcbb"
+  },
+  "content": "Tuyt",
+  "user_id": "683197b43f210fd7fa8f7afe",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 5,
+  "images": [
+    "http://localhost:8000/images/comment/21232f297a57a5a743894a0e4a801fc3-1748105102867.png"
+  ],
+  "createdAt": {
+    "$date": "2025-05-24T16:45:29.401Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T16:45:29.401Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6831f7f76358e619f419bcc9"
+  },
+  "content": "Hay",
+  "user_id": "683197b43f210fd7fa8f7afe",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 5,
+  "images": [
+    "http://localhost:8000/images/comment/keycap_test2-1747312085233-1748105204158.jpg"
+  ],
+  "createdAt": {
+    "$date": "2025-05-24T16:46:47.498Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T16:46:47.498Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6831f8266358e619f419bccf"
+  },
+  "content": "ư",
+  "user_id": "683197b43f210fd7fa8f7afe",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 3,
+  "images": [],
+  "createdAt": {
+    "$date": "2025-05-24T16:47:34.111Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T16:47:34.111Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6831f83b6358e619f419bcdd"
+  },
+  "content": "a",
+  "user_id": "683197b43f210fd7fa8f7afe",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 4,
+  "images": [],
+  "createdAt": {
+    "$date": "2025-05-24T16:47:55.224Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T16:47:55.224Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6831f8686358e619f419bceb"
+  },
+  "content": "hay",
+  "user_id": "683197b43f210fd7fa8f7afe",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 3,
+  "images": [],
+  "createdAt": {
+    "$date": "2025-05-24T16:48:40.536Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T16:48:40.536Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6831f8a96358e619f419bcf9"
+  },
+  "content": "ok",
+  "user_id": "683197b43f210fd7fa8f7afe",
+  "book_id": "6822b9e100616f964b292be6",
+  "star": 3,
+  "images": [],
+  "createdAt": {
+    "$date": "2025-05-24T16:49:45.993Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T16:49:45.993Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6831f94b6358e619f419bd90"
+  },
+  "content": "đã mua",
+  "user_id": "683197b43f210fd7fa8f7afe",
+  "book_id": "6822c10f00616f964b292bea",
+  "star": 4,
+  "images": [],
+  "createdAt": {
+    "$date": "2025-05-24T16:52:27.624Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T16:52:27.624Z"
+  },
+  "__v": 0
+}]

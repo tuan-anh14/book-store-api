@@ -1,0 +1,177 @@
+[{
+  "_id": {
+    "$oid": "67c08f19f1e4796de1914612"
+  },
+  "fullName": "Admin",
+  "password": "$2a$10$8/5DCEj8fMjzZDJiR8M/B.ix4XSTDgsGaq8twu/ePfeKjbPMofh1m",
+  "email": "admin@gmail.com",
+  "phone": "123456789",
+  "role": "ADMIN",
+  "avatar": "Drm3vCxL_400x400-f1327cbd3b4226c14193658a4e2d8d5c.jpg",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2025-02-27T16:13:10.206Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T16:52:57.247Z"
+  },
+  "__v": 0,
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0b2tlbiBsb2dpbiIsImlzcyI6ImZyb20gc2VydmVyIiwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJwaG9uZSI6IjEyMzQ1Njc4OSIsImZ1bGxOYW1lIjoiQWRtaW4iLCJyb2xlIjoiQURNSU4iLCJfaWQiOiI2N2MwOGYxOWYxZTQ3OTZkZTE5MTQ2MTIiLCJhdmF0YXIiOiJEcm0zdkN4TF80MDB4NDAwLWYxMzI3Y2JkM2I0MjI2YzE0MTkzNjU4YTRlMmQ4ZDVjLmpwZyIsImlhdCI6MTc0ODEwNTU3NywiZXhwIjoxNzQ4MTkxOTc3fQ.sx_ay_xHgnvOzdZUNYe9z5MMXWTWKmeaE8OLn4MHi-A",
+  "address": "Văn Lý - Lý Nhân - Hà Nam"
+},
+{
+  "_id": {
+    "$oid": "67c08f19f1e4796de1914613"
+  },
+  "fullName": "Guest ",
+  "password": "$2a$10$uhNl3e3mB67omQQ5oFUDh.69YoD0HIEv3i9Hk/A1ANLdqZW5haYD2",
+  "email": "guest@gmail.com",
+  "phone": "123456789",
+  "role": "ADMIN",
+  "avatar": "21232f297a57a5a743894a0e4a801fc3.png",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2025-02-27T16:13:10.206Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-29T15:05:19.098Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67c08f19f1e4796de1914614"
+  },
+  "fullName": "User",
+  "password": "$2a$10$uhNl3e3mB67omQQ5oFUDh.69YoD0HIEv3i9Hk/A1ANLdqZW5haYD2",
+  "email": "user@gmail.com",
+  "phone": "123456789",
+  "role": "USER",
+  "avatar": "ee11cbb19052e40b07aac0ca060c23ee.png",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2025-02-27T16:13:10.206Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-21T08:35:25.764Z"
+  },
+  "__v": 0,
+  "refreshToken": ""
+},
+{
+  "_id": {
+    "$oid": "67c2dda3b6b890a3ab97a04c"
+  },
+  "fullName": "Tuan Anh Thieu",
+  "password": "$2a$10$GhzGhnCbIElu3I2cMN6Ta.nHFns1xWqEZyF83s/x1Jj.JRoQR8MDG",
+  "email": "admin12@gmail.com",
+  "phone": "0385151409",
+  "role": "USER",
+  "avatar": "c21f969b5f03d33d43e04f8f136e7682.png",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2025-03-01T08:48:38.994Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-01T08:48:38.994Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67c2ddacb6b890a3ab97a04f"
+  },
+  "fullName": "Tuan Anh Thieu",
+  "password": "$2a$10$HrbPjm.0Hpmh4xhSYjweMe.nAs89WRffle3SxsSM8EoEUwi019PWi",
+  "email": "1sfsf@gmail.com",
+  "phone": "0385151409",
+  "role": "USER",
+  "avatar": "c21f969b5f03d33d43e04f8f136e7682.png",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2025-03-01T08:48:38.994Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-01T08:48:38.994Z"
+  },
+  "__v": 0,
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFzZnNmQGdtYWlsLmNvbSIsInBob25lIjoiMDM4NTE1MTQwOSIsImZ1bGxOYW1lIjoiVHVhbiBBbmggVGhpZXUiLCJyb2xlIjoiVVNFUiIsInN1YiI6IjY3YzJkZGFjYjZiODkwYTNhYjk3YTA0ZiIsImF2YXRhciI6ImMyMWY5NjliNWYwM2QzM2Q0M2UwNGY4ZjEzNmU3NjgyLnBuZyIsImlhdCI6MTc0MDg0MjMwOSwiZXhwIjoxNzQwOTI4NzA5fQ.Oaa9GwMlaLeOutLJCrxH4JTJsUP9v5M9nNnwnmEeqxE"
+},
+{
+  "_id": {
+    "$oid": "67c2ddf8b6b890a3ab97a056"
+  },
+  "fullName": "Tuan Anh Thieu",
+  "password": "$2a$10$FQ.m3DX13XB8sAh35BTceeJy2YRSCDf09zAQxVei2M0LxHOSAe4pi",
+  "email": "tkmoi@gmail.com",
+  "phone": "0385151409",
+  "role": "USER",
+  "avatar": "c21f969b5f03d33d43e04f8f136e7682.png",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2025-03-01T08:48:38.994Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-01T08:48:38.994Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67c2de6ab6b890a3ab97a059"
+  },
+  "fullName": "Tuan Anh Thieu",
+  "password": "$2a$10$BH7cuwJ102i3sYTyHoZTpOtSL8Q5nemeiTs15uKxBVnni7Wo/NpzC",
+  "email": "123@gmail.com",
+  "phone": "03851",
+  "role": "USER",
+  "avatar": "",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2025-03-01T08:48:38.994Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-15T06:13:59.935Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67c42c8f81f61fef2240f1be"
+  },
+  "fullName": "Thieu Tuan Anh",
+  "password": "$2a$10$EP505d0TrCHlQU5DJYNrNOHbgh6S/8q1DLTKJ56eEmu6P1gHqXL32",
+  "email": "tuananh@gmail.com",
+  "phone": "0385151409",
+  "role": "USER",
+  "avatar": "c21f969b5f03d33d43e04f8f136e7682.png",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2025-03-02T10:00:32.740Z"
+  },
+  "updatedAt": {
+    "$date": "2025-03-02T10:00:32.740Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683197b43f210fd7fa8f7afe"
+  },
+  "fullName": "Thieu Tuan Anh",
+  "email": "thieutuananh81@gmail.com",
+  "password": "$2a$10$ZwYTiXaWQkujan0wtu7rMeD70BvUic5AnaSPZssvg4PNIxR.JbnLW",
+  "phone": "0385151409",
+  "avatar": "490918807_655048493811502_8899069577113810198_n-1748092433643.jpg",
+  "verificationCode": null,
+  "verificationExpires": null,
+  "isVerified": true,
+  "createdAt": {
+    "$date": "2025-05-24T09:56:04.195Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T16:52:44.213Z"
+  },
+  "__v": 0,
+  "refreshToken": ""
+}]
