@@ -14,6 +14,9 @@ export class UpdateUserInfoDto {
     phone: string;
 
     @IsString()
+    address: string;
+
+    @IsString()
     @IsOptional()
     avatar?: string;
 } 

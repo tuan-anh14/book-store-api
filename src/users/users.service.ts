@@ -190,7 +190,7 @@ export class UsersService {
   }
 
   async updateUserInfo(updateUserInfoDto: UpdateUserInfoDto) {
-    const { _id, fullName, phone, avatar } = updateUserInfoDto;
+    const { _id, fullName, phone, avatar, address } = updateUserInfoDto;
 
     return this.userModel.updateOne(
       { _id },
@@ -199,6 +199,7 @@ export class UsersService {
           fullName,
           phone,
           avatar,
+          address,
           updatedAt: new Date()
         }
       }

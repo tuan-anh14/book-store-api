@@ -23,7 +23,7 @@ export class User {
     @Prop()
     avatar: string;
 
-    @Prop()
+    @Prop({ default: "USER" })
     role: string;
 
     @Prop()
