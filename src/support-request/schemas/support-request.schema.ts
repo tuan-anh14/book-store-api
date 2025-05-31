@@ -35,8 +35,8 @@ export class SupportRequest {
     @Prop()
     adminReply: string;
 
-    @Prop({ default: false })
-    deleted: boolean;
+    @Prop({ type: [String], default: [] })
+    adminReplyImages: string[];
 }
 
 export const SupportRequestSchema = SchemaFactory.createForClass(SupportRequest);

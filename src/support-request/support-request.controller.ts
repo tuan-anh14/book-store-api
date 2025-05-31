@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { SupportRequestService } from './support-request.service';
 import { CreateSupportRequestDto } from './dto/create-support-request.dto';
 import { UpdateSupportRequestDto } from './dto/update-support-request.dto';
 import { ResponseMessage } from 'src/decorator/customize';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @Controller('support-request')
 export class SupportRequestController {
   constructor(private readonly supportRequestService: SupportRequestService) { }
-
 
   @ResponseMessage("Create a new Support Request")
   @Post()
@@ -26,8 +28,32 @@ export class SupportRequestController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSupportRequestDto: UpdateSupportRequestDto) {
-    return this.supportRequestService.update(id, updateSupportRequestDto);
+  @UseInterceptors(
+    FilesInterceptor('adminReplyImages', 5, {
+      storage: diskStorage({
+        destination: './public/images/support',
+        filename: (req, file, cb) => {
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+          cb(null, file.fieldname + '-' + uniqueSuffix + extname(file.originalname));
+        },
+      }),
+    }),
+  )
+  update(
+    @Param('id') id: string,
+    @Body() updateData: any,
+    @UploadedFiles() files: Express.Multer.File[]
+  ) {
+    console.log('Files received:', files);
+    console.log('Update data:', updateData);
+
+    // Xử lý files nếu có
+    if (files && files.length > 0) {
+      const fileUrls = files.map(file => `/images/support/${file.filename}`);
+      updateData.adminReplyImages = fileUrls;
+    }
+
+    return this.supportRequestService.update(id, updateData);
   }
 
   @Delete(':id')

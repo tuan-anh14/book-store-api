@@ -4,11 +4,15 @@ import { Model } from 'mongoose';
 import { SupportRequest, SupportRequestDocument } from './schemas/support-request.schema';
 import { CreateSupportRequestDto } from './dto/create-support-request.dto';
 import { UpdateSupportRequestDto } from './dto/update-support-request.dto';
+import { MailerService } from '../utils/mailer';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class SupportRequestService {
   constructor(
-    @InjectModel(SupportRequest.name) private supportRequestModel: Model<SupportRequestDocument>
+    @InjectModel(SupportRequest.name) private supportRequestModel: Model<SupportRequestDocument>,
+    private readonly mailerService: MailerService,
+    private readonly configService: ConfigService
   ) { }
 
   async create(createSupportRequestDto: CreateSupportRequestDto) {
@@ -18,8 +22,8 @@ export class SupportRequestService {
   async findAll(page = 1, limit = 5) {
     const skip = (page - 1) * limit;
     const [data, total] = await Promise.all([
-      this.supportRequestModel.find({ deleted: { $ne: true } }).sort({ createdAt: -1 }).skip(skip).limit(limit).exec(),
-      this.supportRequestModel.countDocuments({ deleted: { $ne: true } })
+      this.supportRequestModel.find().sort({ createdAt: -1 }).skip(skip).limit(limit).exec(),
+      this.supportRequestModel.countDocuments()
     ]);
     return {
       data,
@@ -30,15 +34,64 @@ export class SupportRequestService {
   }
 
   async findOne(id: string) {
-    return this.supportRequestModel.findOne({ _id: id, deleted: { $ne: true } }).exec();
+    return this.supportRequestModel.findById(id).exec();
   }
 
-  async update(id: string, updateSupportRequestDto: UpdateSupportRequestDto) {
-    return this.supportRequestModel.findByIdAndUpdate(id, updateSupportRequestDto, { new: true }).exec();
+  async update(id: string, updateData: any) {
+    console.log('Update data received:', updateData);
+
+    // Xử lý FormData
+    const updateSupportRequestDto: any = {
+      adminReply: updateData.adminReply,
+      status: 'answered'
+    };
+
+    // Nếu có ảnh mới
+    if (updateData.adminReplyImages) {
+      updateSupportRequestDto.adminReplyImages = updateData.adminReplyImages;
+    }
+
+    const updated = await this.supportRequestModel.findByIdAndUpdate(
+      id,
+      updateSupportRequestDto,
+      { new: true }
+    ).exec();
+
+    console.log('Updated request:', updated);
+
+    // Gửi mail cho khách hàng
+    if (updated?.email && updateSupportRequestDto.adminReply) {
+      const html = `
+        <h2>Phản hồi khiếu nại từ BookStore</h2>
+        <p>${updateSupportRequestDto.adminReply}</p>
+        ${updateSupportRequestDto.adminReplyImages?.length ?
+          `<div style="margin-top: 20px;">
+            <h3>Ảnh đính kèm:</h3>
+            ${updateSupportRequestDto.adminReplyImages.map((url: string) =>
+            `<img src="${url}" style="max-width: 200px; margin: 10px;" />`
+          ).join('')}
+          </div>`
+          : ''
+        }
+      `;
+
+      try {
+        await this.mailerService.sendMail({
+          from: `"BookStore" <${this.configService.get<string>('EMAIL_USER')}>`,
+          to: updated.email,
+          subject: 'Phản hồi khiếu nại từ BookStore',
+          html,
+        });
+        console.log('Email sent successfully to:', updated.email);
+      } catch (error) {
+        console.error('Error sending email:', error);
+      }
+    }
+
+    return updated;
   }
 
   async remove(id: string) {
-    // Soft delete
-    return this.supportRequestModel.findByIdAndUpdate(id, { deleted: true }, { new: true }).exec();
+    return this.supportRequestModel.findByIdAndDelete(id).exec();
   }
 }
