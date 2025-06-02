@@ -15,6 +15,7 @@ import { CommentModule } from './comment/comment.module';
 import { PaymentModule } from './payment/payment.module';
 import { GeminiController } from './gemini/gemini.controller';
 import { SupportRequestModule } from './support-request/support-request.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -44,7 +45,8 @@ import { SupportRequestModule } from './support-request/support-request.module';
     DashboardModule,
     CommentModule,
     PaymentModule,
-    SupportRequestModule
+    SupportRequestModule,
+    AnalyticsModule
   ],
   controllers: [AppController, GeminiController],
   providers: [AppService],
