@@ -173,13 +173,6 @@ export class AnalyticsService {
 
     const result = await this.orderModel.aggregate(pipeline);
 
-    // Log kết quả chi tiết
-    console.log('Query results:', result.map(item => ({
-      bookName: item.bookName,
-      totalQuantity: item.totalQuantity,
-      createdAt: item.createdAt
-    })));
-
     return result;
   }
 
@@ -228,22 +221,6 @@ export class AnalyticsService {
         monthly: []
       };
     }
-
-    // Log thời gian query
-    console.log('Sales Performance Query:', {
-      daily: {
-        start: startOfDay.toISOString(),
-        end: endDate.toISOString()
-      },
-      weekly: {
-        start: startOfWeek.toISOString(),
-        end: endDate.toISOString()
-      },
-      monthly: {
-        start: startOfMonth.toISOString(),
-        end: endDate.toISOString()
-      }
-    });
 
     const pipeline: PipelineStage[] = [
       {
@@ -361,13 +338,6 @@ export class AnalyticsService {
         };
         break;
     }
-
-    // Log thời gian query
-    console.log('Revenue Trends Query:', {
-      period,
-      startDate: startDate.toISOString(),
-      endDate: now.toISOString()
-    });
 
     const pipeline: PipelineStage[] = [
       {
