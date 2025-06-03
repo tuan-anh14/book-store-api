@@ -10,19 +10,6 @@ export class AnalyticsController {
     return this.analyticsService.getRealTimeRevenue();
   }
 
-  @Get('revenue/historical')
-  async getHistoricalRevenue(
-    @Query('startDate') startDate: string,
-    @Query('endDate') endDate: string,
-    @Query('groupBy') groupBy: 'hour' | 'day' | 'month' = 'day'
-  ) {
-    return this.analyticsService.getHistoricalRevenue(
-      new Date(startDate),
-      new Date(endDate),
-      groupBy
-    );
-  }
-
   @Get('products/top-selling')
   async getTopSellingProducts(
     @Query('timeframe') timeframe: 'hour' | 'day' | 'week' | 'month' | 'all' = 'day',
@@ -41,8 +28,11 @@ export class AnalyticsController {
   }
 
   @Get('sales/performance')
-  async getSalesPerformance() {
-    return this.analyticsService.getSalesPerformance();
+  async getSalesPerformance(
+    @Query('year') year?: number,
+    @Query('month') month?: number
+  ) {
+    return this.analyticsService.getSalesPerformance(year, month);
   }
 
   @Get('revenue/trends')
@@ -50,10 +40,5 @@ export class AnalyticsController {
     @Query('period') period: 'day' | 'week' | 'month' = 'day'
   ) {
     return this.analyticsService.getRevenueTrends(period);
-  }
-
-  @Get('products/performance')
-  async getProductPerformance() {
-    return this.analyticsService.getProductPerformance();
   }
 }

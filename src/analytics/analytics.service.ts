@@ -87,60 +87,6 @@ export class AnalyticsService {
     return this.orderModel.aggregate(pipeline);
   }
 
-  // 2. Historical Revenue Analytics
-  async getHistoricalRevenue(startDate: Date, endDate: Date, groupBy: 'hour' | 'day' | 'month' = 'day') {
-    let groupByField: any;
-
-    switch (groupBy) {
-      case 'hour':
-        groupByField = {
-          year: { $year: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } },
-          month: { $month: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } },
-          day: { $dayOfMonth: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } },
-          hour: { $hour: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } }
-        };
-        break;
-      case 'day':
-        groupByField = {
-          year: { $year: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } },
-          month: { $month: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } },
-          day: { $dayOfMonth: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } }
-        };
-        break;
-      case 'month':
-        groupByField = {
-          year: { $year: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } },
-          month: { $month: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } }
-        };
-        break;
-    }
-
-    const pipeline: PipelineStage[] = [
-      {
-        $match: {
-          createdAt: {
-            $gte: startDate,
-            $lte: endDate
-          },
-          status: { $ne: 'CANCELLED' }
-        }
-      },
-      {
-        $group: {
-          _id: groupByField,
-          revenue: { $sum: '$totalPrice' },
-          orderCount: { $sum: 1 },
-          averageOrderValue: { $avg: '$totalPrice' }
-        }
-      },
-      {
-        $sort: { '_id.year': 1, '_id.month': 1, '_id.day': 1, '_id.hour': 1 }
-      }
-    ];
-
-    return this.orderModel.aggregate(pipeline);
-  }
-
   // 2. Top Selling Products Analytics
   async getTopSellingProducts(
     timeframe: 'hour' | 'day' | 'week' | 'month' | 'all' = 'day',
@@ -262,8 +208,15 @@ export class AnalyticsService {
     } else {
       const now = new Date();
       startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      startOfWeek = this.getStartOfWeek(now);
-      startOfMonth = this.getStartOfMonth(now);
+      startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+      // Nếu đang ở đầu tháng (ngày 1-7), lấy từ đầu tháng
+      if (now.getDate() <= 7) {
+        startOfWeek = startOfMonth;
+      } else {
+        startOfWeek = this.getStartOfWeek(now);
+      }
+
       endDate = now;
     }
 
@@ -275,6 +228,22 @@ export class AnalyticsService {
         monthly: []
       };
     }
+
+    // Log thời gian query
+    console.log('Sales Performance Query:', {
+      daily: {
+        start: startOfDay.toISOString(),
+        end: endDate.toISOString()
+      },
+      weekly: {
+        start: startOfWeek.toISOString(),
+        end: endDate.toISOString()
+      },
+      monthly: {
+        start: startOfMonth.toISOString(),
+        end: endDate.toISOString()
+      }
+    });
 
     const pipeline: PipelineStage[] = [
       {
@@ -295,6 +264,13 @@ export class AnalyticsService {
                 revenue: { $sum: '$totalPrice' },
                 orderCount: { $sum: 1 }
               }
+            },
+            {
+              $project: {
+                _id: 0,
+                revenue: 1,
+                orderCount: 1
+              }
             }
           ],
           weekly: [
@@ -312,6 +288,13 @@ export class AnalyticsService {
                 _id: null,
                 revenue: { $sum: '$totalPrice' },
                 orderCount: { $sum: 1 }
+              }
+            },
+            {
+              $project: {
+                _id: 0,
+                revenue: 1,
+                orderCount: 1
               }
             }
           ],
@@ -331,6 +314,13 @@ export class AnalyticsService {
                 revenue: { $sum: '$totalPrice' },
                 orderCount: { $sum: 1 }
               }
+            },
+            {
+              $project: {
+                _id: 0,
+                revenue: 1,
+                orderCount: 1
+              }
             }
           ]
         }
@@ -341,61 +331,50 @@ export class AnalyticsService {
   }
 
   // 4. Revenue Trends Analysis
-  async getRevenueTrends(period: 'day' | 'week' | 'month' = 'day', year?: number, month?: number) {
+  async getRevenueTrends(period: 'day' | 'week' | 'month' = 'day') {
+    const now = new Date();
     let startDate: Date;
-    let endDate: Date;
     let groupBy: any;
 
-    if (year && month) {
-      const range = this.getMonthRange(year, month);
-      startDate = range.startDate;
-      endDate = range.endDate;
-      groupBy = {
-        day: { $dayOfMonth: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } }
-      };
-
-      // Kiểm tra nếu thời gian trong tương lai
-      if (this.isFutureDate(startDate)) {
-        return [];
-      }
-    } else {
-      const now = new Date();
-      switch (period) {
-        case 'day':
-          startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-          endDate = now;
-          groupBy = {
-            hour: { $hour: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } }
-          };
-          break;
-        case 'week':
-          startDate = this.getStartOfWeek(now);
-          endDate = now;
-          groupBy = {
-            day: { $dayOfWeek: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } }
-          };
-          break;
-        case 'month':
-          startDate = this.getStartOfMonth(now);
-          endDate = now;
-          groupBy = {
-            day: { $dayOfMonth: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } }
-          };
-          break;
-      }
+    switch (period) {
+      case 'day':
+        // Lấy doanh thu theo giờ trong ngày hiện tại
+        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        groupBy = {
+          hour: { $hour: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } }
+        };
+        break;
+      case 'week':
+        // Lấy doanh thu theo ngày trong tuần hiện tại
+        const day = now.getDay();
+        const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+        startDate = new Date(now.getFullYear(), now.getMonth(), diff);
+        groupBy = {
+          day: { $dayOfMonth: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } }
+        };
+        break;
+      case 'month':
+        // Lấy doanh thu theo ngày trong tháng hiện tại
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        groupBy = {
+          day: { $dayOfMonth: { $add: ['$createdAt', 7 * 60 * 60 * 1000] } }
+        };
+        break;
     }
 
-    // Kiểm tra khoảng thời gian hợp lệ
-    if (!this.isValidDateRange(startDate, endDate)) {
-      return [];
-    }
+    // Log thời gian query
+    console.log('Revenue Trends Query:', {
+      period,
+      startDate: startDate.toISOString(),
+      endDate: now.toISOString()
+    });
 
     const pipeline: PipelineStage[] = [
       {
         $match: {
           createdAt: {
             $gte: startDate,
-            $lte: endDate
+            $lte: now
           },
           status: { $ne: 'CANCELLED' }
         }
@@ -409,87 +388,16 @@ export class AnalyticsService {
         }
       },
       {
-        $sort: { '_id': 1 }
-      }
-    ];
-
-    return this.orderModel.aggregate(pipeline);
-  }
-
-  // 5. Product Performance Analysis
-  async getProductPerformance(year?: number, month?: number) {
-    let startDate: Date;
-    let endDate: Date;
-
-    if (year && month) {
-      const range = this.getMonthRange(year, month);
-      startDate = range.startDate;
-      endDate = range.endDate;
-
-      // Kiểm tra nếu thời gian trong tương lai
-      if (this.isFutureDate(startDate)) {
-        return [];
-      }
-    } else {
-      const now = new Date();
-      startDate = this.getStartOfMonth(now);
-      endDate = now;
-    }
-
-    // Kiểm tra khoảng thời gian hợp lệ
-    if (!this.isValidDateRange(startDate, endDate)) {
-      return [];
-    }
-
-    const pipeline: PipelineStage[] = [
-      {
-        $match: {
-          createdAt: {
-            $gte: startDate,
-            $lte: endDate
-          },
-          status: { $ne: 'CANCELLED' }
-        }
-      },
-      {
-        $unwind: '$detail'
-      },
-      {
-        $group: {
-          _id: '$detail._id',
-          totalSold: { $sum: '$detail.quantity' },
-          totalRevenue: {
-            $sum: {
-              $multiply: [
-                { $divide: ['$totalPrice', { $sum: '$detail.quantity' }] },
-                '$detail.quantity'
-              ]
-            }
-          }
-        }
-      },
-      {
-        $lookup: {
-          from: 'books',
-          localField: '_id',
-          foreignField: '_id',
-          as: 'bookDetails'
-        }
-      },
-      {
-        $unwind: '$bookDetails'
-      },
-      {
         $project: {
-          _id: 1,
-          title: '$bookDetails.title',
-          totalSold: 1,
-          totalRevenue: 1,
-          averagePrice: { $divide: ['$totalRevenue', '$totalSold'] }
+          _id: 0,
+          time: '$_id',
+          revenue: 1,
+          orderCount: 1,
+          averageOrderValue: 1
         }
       },
       {
-        $sort: { totalRevenue: -1 }
+        $sort: { 'time': 1 }
       }
     ];
 
