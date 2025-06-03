@@ -142,55 +142,65 @@ export class AnalyticsService {
   }
 
   // 2. Top Selling Products Analytics
-  async getTopSellingProducts(timeframe: 'hour' | 'day' | 'week' | 'month' = 'day', year?: number, month?: number) {
-    let startDate: Date;
-    let endDate: Date;
+  async getTopSellingProducts(
+    timeframe: 'hour' | 'day' | 'week' | 'month' | 'all' = 'day',
+    year?: number,
+    month?: number,
+    startDate?: Date,
+    endDate?: Date
+  ) {
+    let queryStartDate: Date;
+    let queryEndDate: Date = new Date();
 
-    if (year && month) {
+    if (startDate && endDate) {
+      queryStartDate = startDate;
+      queryEndDate = endDate;
+    } else if (year && month) {
       const range = this.getMonthRange(year, month);
-      startDate = range.startDate;
-      endDate = range.endDate;
-
-      // Kiểm tra nếu thời gian trong tương lai
-      if (this.isFutureDate(startDate)) {
-        return [];
-      }
+      queryStartDate = range.startDate;
+      queryEndDate = range.endDate;
     } else {
       const now = new Date();
       switch (timeframe) {
         case 'hour':
-          startDate = new Date(now.getTime() - 60 * 60 * 1000);
-          endDate = now;
+          // Lấy 1 giờ gần nhất
+          queryStartDate = new Date(now.getTime() - 60 * 60 * 1000);
+          queryEndDate = now;
           break;
         case 'day':
-          startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-          endDate = now;
+          // Lấy từ 00:00 đến 23:59 của ngày hiện tại
+          queryStartDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+          queryEndDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
           break;
         case 'week':
-          startDate = this.getStartOfWeek(now);
-          endDate = now;
+          // Lấy từ thứ 2 đến chủ nhật của tuần hiện tại
+          const day = now.getDay();
+          const diff = now.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is sunday
+          queryStartDate = new Date(now.getFullYear(), now.getMonth(), diff);
+          queryEndDate = new Date(now.getFullYear(), now.getMonth(), diff + 6, 23, 59, 59);
           break;
         case 'month':
-          startDate = this.getStartOfMonth(now);
-          endDate = now;
+          // Lấy từ ngày 1 đến ngày cuối của tháng hiện tại
+          queryStartDate = new Date(now.getFullYear(), now.getMonth(), 1);
+          queryEndDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+          break;
+        case 'all':
+          // Lấy cả năm 2025
+          queryStartDate = new Date(2025, 0, 1);
+          queryEndDate = new Date(2025, 11, 31, 23, 59, 59);
           break;
         default:
-          startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-          endDate = now;
+          queryStartDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
       }
     }
 
-    // Kiểm tra khoảng thời gian hợp lệ
-    if (!this.isValidDateRange(startDate, endDate)) {
-      return [];
-    }
-
+    // Đơn giản hóa pipeline
     const pipeline: PipelineStage[] = [
       {
         $match: {
           createdAt: {
-            $gte: startDate,
-            $lte: endDate
+            $gte: queryStartDate,
+            $lte: queryEndDate
           },
           status: { $ne: 'CANCELLED' }
         }
@@ -203,60 +213,28 @@ export class AnalyticsService {
           _id: '$detail._id',
           bookName: { $first: '$detail.bookName' },
           totalQuantity: { $sum: '$detail.quantity' },
-          totalRevenue: {
-            $sum: {
-              $multiply: [
-                { $divide: ['$totalPrice', { $sum: '$detail.quantity' }] },
-                '$detail.quantity'
-              ]
-            }
-          }
-        }
-      },
-      {
-        $lookup: {
-          from: 'books',
-          let: { bookId: '$_id' },
-          pipeline: [
-            {
-              $match: {
-                $expr: { $eq: [{ $toString: '$_id' }, '$$bookId'] }
-              }
-            }
-          ],
-          as: 'bookDetails'
-        }
-      },
-      {
-        $unwind: {
-          path: '$bookDetails',
-          preserveNullAndEmptyArrays: true
-        }
-      },
-      {
-        $project: {
-          _id: 1,
-          title: '$bookName',
-          totalQuantity: 1,
-          totalRevenue: 1,
-          thumbnail: { $ifNull: ['$bookDetails.thumbnail', ''] },
-          author: { $ifNull: ['$bookDetails.author', ''] }
-        }
-      },
-      {
-        $match: {
-          totalQuantity: { $gt: 0 }
+          totalRevenue: { $sum: '$totalPrice' },
+          createdAt: { $first: '$createdAt' }
         }
       },
       {
         $sort: { totalQuantity: -1 }
       },
       {
-        $limit: 10
+        $limit: 50
       }
     ];
 
-    return this.orderModel.aggregate(pipeline);
+    const result = await this.orderModel.aggregate(pipeline);
+
+    // Log kết quả chi tiết
+    console.log('Query results:', result.map(item => ({
+      bookName: item.bookName,
+      totalQuantity: item.totalQuantity,
+      createdAt: item.createdAt
+    })));
+
+    return result;
   }
 
   // 3. Sales Performance Analytics

@@ -25,9 +25,19 @@ export class AnalyticsController {
 
   @Get('products/top-selling')
   async getTopSellingProducts(
-    @Query('timeframe') timeframe: 'hour' | 'day' | 'week' = 'day'
+    @Query('timeframe') timeframe: 'hour' | 'day' | 'week' | 'month' | 'all' = 'day',
+    @Query('year') year?: number,
+    @Query('month') month?: number,
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string
   ) {
-    return this.analyticsService.getTopSellingProducts(timeframe);
+    return this.analyticsService.getTopSellingProducts(
+      timeframe,
+      year,
+      month,
+      startDate ? new Date(startDate) : undefined,
+      endDate ? new Date(endDate) : undefined
+    );
   }
 
   @Get('sales/performance')
