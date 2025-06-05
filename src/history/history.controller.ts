@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards, Delete } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ResponseMessage, User } from '../decorator/customize';
 import { IUser } from '../users/user.interface';
@@ -32,5 +32,10 @@ export class HistoryController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.historyService.findOne(id);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.historyService.remove(id);
   }
 }

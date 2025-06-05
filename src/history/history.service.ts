@@ -17,11 +17,11 @@ export class HistoryService {
   }
 
   async findAll() {
-    return this.historyModel.find().exec();
+    return this.historyModel.find().sort({ createdAt: -1 }).exec();
   }
 
   async findByUserId(userId: string) {
-    return this.historyModel.find({ userId }).exec();
+    return this.historyModel.find({ userId }).sort({ createdAt: -1 }).exec();
   }
 
   async findAllWithPaginate(currentPage: number, limit: number, qs: string) {
@@ -37,8 +37,7 @@ export class HistoryService {
     const result = await this.historyModel.find(filter)
       .skip(offset)
       .limit(defaultLimit)
-      // @ts-ignore: Unreachable code error
-      .sort(sort)
+      .sort({ createdAt: -1 })
       .populate(population)
       .exec();
 
@@ -55,5 +54,9 @@ export class HistoryService {
 
   findOne(id: string) {
     return this.historyModel.findOne({ _id: id });
+  }
+
+  remove(id: string) {
+    return this.historyModel.deleteOne({ _id: id });
   }
 }
