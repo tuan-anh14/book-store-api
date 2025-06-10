@@ -26,7 +26,7 @@ export class Book {
     @Prop({ default: 0 })
     sold: number;
 
-    @Prop()
+    @Prop({ required: true, min: 0, default: 0 })
     quantity: number;
 
     @Prop()
