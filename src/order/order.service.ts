@@ -8,6 +8,7 @@ import aqp from 'api-query-params';
 import { IUser } from '../users/user.interface';
 import { History, HistoryDocument } from '../history/schemas/history.schema';
 import { Book, BookDocument } from '../book/schemas/book.schema';
+import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 
 @Injectable()
 export class OrderService {
@@ -120,7 +121,69 @@ export class OrderService {
     );
   }
 
+  async updateStatus(id: string, updateStatusDto: UpdateOrderStatusDto) {
+    const order = await this.orderModel.findById(id);
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    // Nếu đơn hàng đã hoàn thành hoặc đã hủy, không cho phép cập nhật
+    if (order.status === 'DELIVERED' || order.status === 'CANCELLED') {
+      throw new BadRequestException(`Cannot update status of ${order.status} order`);
+    }
+
+    // Nếu đang chuyển sang trạng thái CANCELLED, cần hoàn lại số lượng sách
+    if (updateStatusDto.status === 'CANCELLED' && order.status !== 'CANCELLED') {
+      const session = await this.orderModel.db.startSession();
+      session.startTransaction();
+
+      try {
+        // Hoàn lại số lượng sách
+        for (const item of order.detail) {
+          await this.bookModel.updateOne(
+            { _id: item._id },
+            {
+              $inc: {
+                quantity: item.quantity,
+                sold: -item.quantity
+              }
+            },
+            { session }
+          );
+        }
+
+        // Cập nhật trạng thái đơn hàng
+        await this.orderModel.findByIdAndUpdate(
+          id,
+          { status: updateStatusDto.status },
+          { session }
+        );
+
+        await session.commitTransaction();
+      } catch (error) {
+        await session.abortTransaction();
+        throw error;
+      } finally {
+        session.endSession();
+      }
+    } else {
+      // Cập nhật trạng thái bình thường
+      await this.orderModel.findByIdAndUpdate(id, { status: updateStatusDto.status });
+    }
+
+    return { success: true };
+  }
+
   remove(id: string) {
     return this.orderModel.deleteOne({ _id: id });
+  }
+
+  async findByUserId(userId: string) {
+    const orders = await this.orderModel.find({ userId })
+      .sort({ createdAt: -1 })
+      .exec();
+    return {
+      result: orders
+    };
   }
 }

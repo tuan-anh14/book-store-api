@@ -5,6 +5,7 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ResponseMessage, User } from '../decorator/customize';
 import { IUser } from '../users/user.interface';
+import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 
 @Controller('/order')
 export class OrderController {
@@ -30,14 +31,22 @@ export class OrderController {
     return this.orderService.findAll();
   }
 
+  @Get('user')
+  @UseGuards(JwtAuthGuard)
+  @ResponseMessage("Fetch user's orders")
+  getUserOrders(@User() user: IUser) {
+    return this.orderService.findByUserId(user._id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.orderService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(id, updateOrderDto);
+  @ResponseMessage("Update order status")
+  updateStatus(@Param('id') id: string, @Body() updateStatusDto: UpdateOrderStatusDto) {
+    return this.orderService.updateStatus(id, updateStatusDto);
   }
 
   @Delete(':id')

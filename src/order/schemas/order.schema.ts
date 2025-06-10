@@ -20,6 +20,9 @@ export class Order {
     @Prop({ required: true })
     type: string;
 
+    @Prop({ required: true })
+    userId: string;
+
     @Prop({
         type: [{
             bookName: String,
