@@ -63,7 +63,7 @@ export class GeminiController {
     @Post('chat')
     async chat(@Body('prompt') prompt: string) {
         const genAI = new GoogleGenerativeAI(this.configService.get<string>('GEMINI_API_KEY'));
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-pro' });
 
         try {
             const contextData = this.getContextData();
