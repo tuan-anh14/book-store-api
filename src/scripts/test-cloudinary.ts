@@ -1,13 +1,13 @@
-import { config } from 'dotenv';
-import { v2 as cloudinary } from 'cloudinary';
+import * as dotenv from 'dotenv';
+import * as cloudinary from 'cloudinary';
 
-// Load environment variables
-config();
+dotenv.config();
 
 /**
  * Test Cloudinary configuration and connection
+ * @param cleanup - If true, delete test image after upload (default: false)
  */
-async function testCloudinary(): Promise<void> {
+async function testCloudinary(cleanup: boolean = false): Promise<void> {
   console.log('🔍 Testing Cloudinary configuration...');
 
   // Check environment variables
@@ -35,23 +35,20 @@ async function testCloudinary(): Promise<void> {
     return;
   }
 
-  // Configure Cloudinary
-  cloudinary.config({
+  cloudinary.v2.config({
     cloud_name: cloudName,
     api_key: apiKey,
     api_secret: apiSecret,
   });
 
   try {
-    // Test API connection
     console.log('\n🔗 Testing Cloudinary API connection...');
-    const result = await cloudinary.api.ping();
+    const result = await cloudinary.v2.api.ping();
     console.log('✅ Cloudinary API connection successful!');
     console.log('📊 API Status:', result);
 
-    // Test upload with a simple image (1x1 transparent PNG)
     console.log('\n📤 Testing image upload...');
-    const uploadResult = await cloudinary.uploader.upload(
+    const uploadResult = await cloudinary.v2.uploader.upload(
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
       {
         folder: 'book-store/test',
@@ -62,11 +59,15 @@ async function testCloudinary(): Promise<void> {
     console.log('✅ Test upload successful!');
     console.log('🔗 Upload URL:', uploadResult.secure_url);
     console.log('🆔 Public ID:', uploadResult.public_id);
+    console.log('\n💡 Image is available at the URL above. You can verify it in your browser.');
 
-    // Clean up test image
-    console.log('\n🗑️ Cleaning up test image...');
-    await cloudinary.uploader.destroy(uploadResult.public_id);
-    console.log('✅ Test image deleted successfully!');
+    if (cleanup) {
+      console.log('\n🗑️ Cleaning up test image...');
+      await cloudinary.v2.uploader.destroy(uploadResult.public_id);
+      console.log('✅ Test image deleted successfully!');
+    } else {
+      console.log('\n💡 Test image kept for verification. Use --cleanup flag to delete it.');
+    }
   } catch (error) {
     console.error('❌ Cloudinary test failed:', error.message);
     console.error('💡 Please check your Cloudinary credentials and internet connection.');
@@ -74,9 +75,11 @@ async function testCloudinary(): Promise<void> {
   }
 }
 
-// Run if executed directly
 if (require.main === module) {
-  testCloudinary()
+  const args = process.argv.slice(2);
+  const cleanup = args.includes('--cleanup') || args.includes('-c');
+  
+  testCloudinary(cleanup)
     .then(() => {
       console.log('\n🎉 Test completed successfully!');
       process.exit(0);

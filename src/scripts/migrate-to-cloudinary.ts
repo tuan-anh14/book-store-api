@@ -1,5 +1,5 @@
-import { config } from 'dotenv';
-import { v2 as cloudinary } from 'cloudinary';
+import * as dotenv from 'dotenv';
+import * as cloudinary from 'cloudinary';
 import * as fs from 'fs';
 import * as path from 'path';
 import { connect, connection } from 'mongoose';
@@ -8,8 +8,8 @@ import { User, UserSchema } from '../users/schemas/user.schema';
 import { Comment, CommentSchema } from '../comment/schemas/comment.schema';
 import { Model } from 'mongoose';
 
-config();
-cloudinary.config({
+dotenv.config();
+cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
@@ -30,7 +30,7 @@ async function uploadToCloudinary(
 
     console.log(`📤 Uploading: ${filePath} → ${folder}`);
 
-    const result = await cloudinary.uploader.upload(filePath, {
+    const result = await cloudinary.v2.uploader.upload(filePath, {
       folder: folder,
       resource_type: 'auto',
       quality: 'auto',
@@ -239,7 +239,7 @@ async function migrateAll(): Promise<void> {
     const UserModel = connection.model<User>(User.name, UserSchema);
     const CommentModel = connection.model<Comment>(Comment.name, CommentSchema);
 
-    await cloudinary.api.ping();
+    await cloudinary.v2.api.ping();
     console.log('✅ Cloudinary connection successful');
     await migrateBooks(BookModel);
     await migrateUsers(UserModel);
