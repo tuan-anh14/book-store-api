@@ -36,3 +36,7 @@ lerna-debug.log*
 
 # Local env files
 .env
+
+
+TASKS.md
+MIGRATION_PLAN.md

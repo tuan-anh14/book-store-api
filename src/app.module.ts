@@ -16,6 +16,7 @@ import { PaymentModule } from './payment/payment.module';
 import { GeminiController } from './gemini/gemini.controller';
 import { SupportRequestModule } from './support-request/support-request.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -46,7 +47,8 @@ import { AnalyticsModule } from './analytics/analytics.module';
     CommentModule,
     PaymentModule,
     SupportRequestModule,
-    AnalyticsModule
+    AnalyticsModule,
+    CloudinaryModule
   ],
   controllers: [AppController, GeminiController],
   providers: [AppService],
