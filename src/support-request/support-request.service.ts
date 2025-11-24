@@ -37,37 +37,35 @@ export class SupportRequestService {
     return this.supportRequestModel.findById(id).exec();
   }
 
-  async update(id: string, updateData: any) {
-    console.log('Update data received:', updateData);
-
-    // Xử lý FormData
-    const updateSupportRequestDto: any = {
+  async update(id: string, updateData: UpdateSupportRequestDto) {
+    // Xử lý update data
+    const updatePayload: Partial<SupportRequest> = {
       adminReply: updateData.adminReply,
-      status: 'answered'
+      status: 'answered',
     };
 
     // Nếu có ảnh mới
-    if (updateData.adminReplyImages) {
-      updateSupportRequestDto.adminReplyImages = updateData.adminReplyImages;
+    if (updateData.adminReplyImages && updateData.adminReplyImages.length > 0) {
+      updatePayload.adminReplyImages = updateData.adminReplyImages;
     }
 
     const updated = await this.supportRequestModel.findByIdAndUpdate(
       id,
-      updateSupportRequestDto,
+      { $set: updatePayload },
       { new: true }
     ).exec();
 
     console.log('Updated request:', updated);
 
     // Gửi mail cho khách hàng
-    if (updated?.email && updateSupportRequestDto.adminReply) {
+    if (updated?.email && updatePayload.adminReply) {
       const html = `
         <h2>Phản hồi khiếu nại từ BookStore</h2>
-        <p>${updateSupportRequestDto.adminReply}</p>
-        ${updateSupportRequestDto.adminReplyImages?.length ?
+        <p>${updatePayload.adminReply}</p>
+        ${updatePayload.adminReplyImages && updatePayload.adminReplyImages.length > 0 ?
           `<div style="margin-top: 20px;">
             <h3>Ảnh đính kèm:</h3>
-            ${updateSupportRequestDto.adminReplyImages.map((url: string) =>
+            ${updatePayload.adminReplyImages.map((url: string) =>
             `<img src="${url}" style="max-width: 200px; margin: 10px;" />`
           ).join('')}
           </div>`

@@ -5,6 +5,7 @@ import { SupportRequestController } from './support-request.controller';
 import { SupportRequest, SupportRequestSchema } from './schemas/support-request.schema';
 import { AuthModule } from '../auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import { ConfigModule } from '@nestjs/config';
       { name: SupportRequest.name, schema: SupportRequestSchema }
     ]),
     AuthModule,
-    ConfigModule
+    ConfigModule,
+    CloudinaryModule
   ],
   controllers: [SupportRequestController],
   providers: [SupportRequestService]
