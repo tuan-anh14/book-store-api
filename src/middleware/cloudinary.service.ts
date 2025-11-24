@@ -28,14 +28,16 @@ export class CloudinaryService {
   createReviewsStorage(): CloudinaryStorage {
     return new CloudinaryStorage({
       cloudinary: cloudinary,
-      params: {
-        folder: 'book-store/reviews',
-        allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-        transformation: [
-          { width: 1200, height: 1200, crop: 'limit', quality: 'auto' },
-          { fetch_format: 'auto' },
-        ],
-        resource_type: 'image',
+      params: (req, file) => {
+        return {
+          folder: 'book-store/reviews',
+          allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+          transformation: [
+            { width: 1200, height: 1200, crop: 'limit', quality: 'auto' },
+            { fetch_format: 'auto' },
+          ],
+          resource_type: 'image',
+        } as any;
       },
     });
   }
@@ -46,14 +48,16 @@ export class CloudinaryService {
   createAdminStorage(): CloudinaryStorage {
     return new CloudinaryStorage({
       cloudinary: cloudinary,
-      params: {
-        folder: 'book-store/admin',
-        allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-        transformation: [
-          { width: 1200, height: 1200, crop: 'limit', quality: 'auto' },
-          { fetch_format: 'auto' },
-        ],
-        resource_type: 'image',
+      params: (req, file) => {
+        return {
+          folder: 'book-store/admin',
+          allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+          transformation: [
+            { width: 1200, height: 1200, crop: 'limit', quality: 'auto' },
+            { fetch_format: 'auto' },
+          ],
+          resource_type: 'image',
+        } as any;
       },
     });
   }
@@ -64,26 +68,26 @@ export class CloudinaryService {
   createAvatarStorage(): CloudinaryStorage {
     return new CloudinaryStorage({
       cloudinary: cloudinary,
-      params: {
-        folder: 'book-store/avatars',
-        allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-        transformation: [
-          {
-            width: 300,
-            height: 300,
-            crop: 'fill',
-            gravity: 'face',
-            quality: 'auto',
-          },
-          { fetch_format: 'auto' },
-        ],
-        resource_type: 'image',
-        public_id: (req, file) => {
-          // Create unique public_id for avatar
-          const timestamp = Date.now();
-          const random = Math.random().toString(36).substring(2, 15);
-          return `avatar_${timestamp}_${random}`;
-        },
+      params: (req, file) => {
+        // Create unique public_id for avatar
+        const timestamp = Date.now();
+        const random = Math.random().toString(36).substring(2, 15);
+        return {
+          folder: 'book-store/avatars',
+          allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+          transformation: [
+            {
+              width: 300,
+              height: 300,
+              crop: 'fill',
+              gravity: 'face',
+              quality: 'auto',
+            },
+            { fetch_format: 'auto' },
+          ],
+          resource_type: 'image',
+          public_id: `book-store/avatars/avatar_${timestamp}_${random}`,
+        } as any;
       },
     });
   }
@@ -94,14 +98,16 @@ export class CloudinaryService {
   createBookStorage(): CloudinaryStorage {
     return new CloudinaryStorage({
       cloudinary: cloudinary,
-      params: {
-        folder: 'book-store/books',
-        allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-        transformation: [
-          { width: 1200, height: 1200, crop: 'limit', quality: 'auto' },
-          { fetch_format: 'auto' },
-        ],
-        resource_type: 'image',
+      params: (req, file) => {
+        return {
+          folder: 'book-store/books',
+          allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+          transformation: [
+            { width: 1200, height: 1200, crop: 'limit', quality: 'auto' },
+            { fetch_format: 'auto' },
+          ],
+          resource_type: 'image',
+        } as any;
       },
     });
   }

@@ -3,14 +3,16 @@ import { FilesService } from './files.service';
 import { FilesController } from './files.controller';
 import { MulterModule } from '@nestjs/platform-express';
 import { MulterConfigService } from './multer.config';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 
 @Module({
   controllers: [FilesController],
   providers: [FilesService],
   imports: [
-    MulterModule.registerAsync({
-      useClass: MulterConfigService,
-    })
+    CloudinaryModule,
+    // MulterModule.registerAsync({
+    //   useClass: MulterConfigService,
+    // })
   ]
 })
 
