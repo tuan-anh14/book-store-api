@@ -6,10 +6,13 @@ import { RegisterUserDto } from 'src/users/dto/create-user.dto';
 import { Request, Response } from 'express';
 import { IUser } from 'src/users/user.interface';
 
+import { UsersService } from 'src/users/users.service';
+
 @Controller("auth") // route sẽ là /api/v1/auth
 export class AuthController {
     constructor(
-        private authService: AuthService
+        private authService: AuthService,
+        private usersService: UsersService
     ) { }
 
     @Public()
@@ -53,8 +56,9 @@ export class AuthController {
 
     @ResponseMessage('Get user information')
     @Get('/account')
-    handleGetAccount(@User() user: IUser) {
-        return { user }
+    async handleGetAccount(@User() user: IUser) {
+        const temp = await this.usersService.findOne(user._id);
+        return { user: temp };
     }
 
     @Public()
