@@ -10,6 +10,9 @@ export class UpdateBookDto {
     @IsNumber()
     price: number;
 
+    @IsNumber()
+    quantity: number;
+
     @IsString()
     category: string;
 
