@@ -5,8 +5,8 @@ import moment from 'moment';
 
 @Injectable()
 export class PaymentService {
-    private readonly tmnCode = 'VWWBMRB3';
-    private readonly secretKey = 'LR27UY6X3EBGF3DGDZZJQYAW3T658IJ0';
+    private readonly tmnCode = 'HQE03JJB';
+    private readonly secretKey = '9JALYTT6XLQWSEPJN4BVADGM78D03UDW';
     private readonly vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
     private readonly returnUrl = 'http://localhost:3000/payment-result';
 
